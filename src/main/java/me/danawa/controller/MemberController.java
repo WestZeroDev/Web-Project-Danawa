@@ -259,7 +259,6 @@ public class MemberController {
 		if(session.getAttribute("idKey") == null) {
 			return "redirect:/";
 		}
-		System.out.println(pageable.getPageNumber());
 		String idKey = session.getAttribute("idKey").toString();
 		Member member = memberService.findById(idKey).get();
 		String sort = "none";
@@ -297,6 +296,9 @@ public class MemberController {
 	//로그아웃
 	@GetMapping("/members/logout")
 	public String doLogout(Model model, HttpSession session, HttpServletRequest request) {
+		if(session.getAttribute("idKey") == null) {
+			return "redirect:/";
+		}
 		session.invalidate();
 		return "redirect:" + request.getHeader("Referer");
 	}

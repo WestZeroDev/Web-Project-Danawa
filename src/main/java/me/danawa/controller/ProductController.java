@@ -77,17 +77,15 @@ public class ProductController {
 		return "notebook :: #ajaxArea";
 	}
 	
-	@GetMapping("/notebook/initData")
-	public String getData(HttpSession session) {
+	@GetMapping("/notebook/updateData")
+	public String updateData(HttpSession session) {
 		if(session.getAttribute("idKey") != null) {
 			//관리자 계정만 허용
 			if(session.getAttribute("idKey").toString().equals("admin@gmail.com")) {
-				//전체 크롤링
-//				productService.crawling();
 				//가격정보 업데이트
-//				productService.updatePriceInfo();
+				productService.updatePriceInfo();
 				//최저가 업데이트
-//				productService.updateMinPrice();
+				productService.updateMinPrice();
 				return "redirect:/notebook";
 			}
 		}
