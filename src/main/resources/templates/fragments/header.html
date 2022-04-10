@@ -1,0 +1,37 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div id="danawa_header" th:fragment="header">
+	<div id="main_header">
+		<a href="/" class="logo" align="left">
+			<img src="/icon/danawa_logo_main_brand.png">
+		</a>
+
+		<div id="search_area" align="center">
+			<div class="search_box">
+				<form id="main_search" name="main_search" method="get" action="/search">
+					<input type="text" name="keyword" id="search_input"
+						autocomplete="off" th:value="${keyword}" placeholder="검색어를 입력해주세요.">
+					<button type="submit" class="search_submit" onclick="return checkSearchInput()">검색</button>
+				</form>
+			</div>
+		</div>
+
+		<div th:if="${session.idKey == null}" class="user_box" align="right">
+			<a href="/members/login">로그인</a>
+			<a href="/members/join">회원가입</a>
+		</div>
+
+		<div th:if="${session.idKey != null}" class="user_box" align="right">
+			<a href="/members/myPage">마이페이지</a>
+			<a href="/members/logout">로그아웃</a>
+		</div>
+	</div>
+
+	<div id="main_menubar" align="center">
+		<a href="/notebook">노트북</a>
+		<a href="#">Q & A</a>
+		<a href="/board/free">자유게시판</a>
+		<a href="#">동영상</a>
+		<a href="#">뉴스</a>
+	</div>
+</div>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragments/head :: head"></th:block>
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/freeBoardPost.css}">
+</head>
+<body>
+	<div id="wrap">
+		<th:block th:replace="fragments/header :: header"></th:block>
+
+		<div id="container" class="freeBoardPost_wrap" align="center">
+			<div class="head" align="left">
+				<h2><a href="/board/free">자유게시판</a></h2>
+			</div>
+
+			<div class="subhead" align="center">글쓰기</div>
+
+			<form action="/board/free/register" method="post" onsubmit="return checkForm()">
+				<div class="title_area">
+					<label for="title" style="padding:12px;">제목</label>
+					<input type="text" name="title" id="title" placeholder="제목을 입력하세요." style="border-radius:5px; width:93%;">
+				</div>
+
+				<div class="content_area" style="text-align:left">
+					<textarea id="summernote" name="content"></textarea>
+					<input type="hidden" id="fileList" name="fileList">
+				</div>
+				
+				<div class="button_wrap" align="center">
+					<button type="submit" id="submit">등록</button>
+					<button type="button" id="cancel" onclick="postCancel()">취소</button>
+				</div>
+			</form>
+		</div>
+		
+		<th:block th:replace="fragments/footer :: footer"></th:block>
+	</div>
+	
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#summernote').summernote({
+		height: 400, // 에디터 높이
+		minHeight: null, // 최소 높이
+		maxHeight: null, // 최대 높이
+		lang: "ko-KR", // 한글 설정
+       	placeholder: "내용을 입력하세요.",
+        focus: false,
+  	  	toolbar: [	// 글꼴 설정
+	      		    ['fontname', ['fontname']],
+	      		    // 글자 크기 설정
+	      		    ['fontsize', ['fontsize']],
+	      		    // 굵기, 기울임꼴, 밑줄, 취소선, 서식지우기
+	      		    ['style', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+	      		    // 글자색
+	      		    ['color', ['forecolor','color']],
+	      		    // 표만들기
+	      		    ['table', ['table']],
+	      		    // 글머리 기호, 번호매기기, 문단정렬
+	      		    ['para', ['ul', 'ol', 'paragraph']],
+	      		    // 줄간격
+	      		    ['height', ['height']],
+	      		    // 그림첨부, 링크만들기, 동영상첨부
+	      		    ['insert', ['picture','link','video']],
+	      		    // 코드보기, 확대해서보기
+	      		    ['view', ['codeview','fullscreen']]	],
+  		fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Csourier New','맑은 고딕','궁서','굴림체','굴림','돋음체','바탕체'],
+  		fontSizes: ['9','10','11','12','14','16','18','20','24','28','30','36','50'],
+  		callbacks: { 
+			onImageUpload: function(files, editor, welEditable) {
+				for(var i = 0; i < files.length; i++) {
+					sendFile(files[i], this);
+				}
+			},
+			onMediaDelete: function(target) {
+		        deleteFile(target[0].src);
+		    }
+		}
+	});
+});
+
+var uploadFileList = [];
+function sendFile(file, el) {
+	data = new FormData();
+	data.append('file', file);
+	$.ajax({
+		data: data,
+		type: "POST",
+		url: '/image',
+		contentType: false,
+		enctype: 'multipart/form-data',
+		processData: false,
+		success: function(url) {
+			uploadFileList.push(url.replace('/image/', ''));
+			console.log(uploadFileList);
+			$(el).summernote('insertImage', url);
+		}
+	});
+}
+
+function deleteFile(imageSrc) {
+    $.ajax({
+        data: {"src": imageSrc},
+        type: "POST",
+        url: "/image/delete",
+        cache: false,
+        success: function(resp) {
+            console.log(resp);
+        }
+    });
+}
+	
+function checkForm() {
+	if($("#title").val() == "") {
+   		alert("제목을 입력하세요.");
+   		return false;
+  	}
+	else if($("#title").val().length > 200) {
+		alert("제목은 최대 200자까지 입력 가능합니다.");
+   		return false;
+	}
+	else if($("#summernote").val() == "") {
+		alert("내용을 입력하세요.");
+   		return false;
+	}
+	else if($("#summernote").val().length > 5000) {
+		alert("내용은 최대 5,000자까지 입력 가능합니다.");
+		return false;
+	}
+	else {
+		$("#fileList").val(uploadFileList);
+		$("form").submit();
+		return true;
+	}
+}
+
+function postCancel() {
+	if(confirm("게시물 작성을 취소하시겠습니까?")) {
+		$.ajax({
+	        url: "/board/free/cancel",
+	        type: "POST",
+	        data: {"fileList": uploadFileList},
+	        cache: false,
+	        success: function(resp) {
+	            location.href='http://localhost:8080/board/free';
+	        }
+	    });
+	}
+}
+</script>
+</body>
+</html>

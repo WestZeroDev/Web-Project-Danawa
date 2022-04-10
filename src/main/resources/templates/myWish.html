@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragments/head :: head"></th:block>
+    <link rel="stylesheet" th:href="@{/css/myWish.css}">
+</head>
+
+<body>
+	<div id="wrap">
+        <th:block th:replace="fragments/header :: header"></th:block>
+
+        <div id="container" class="myPage_wrap">
+            <div class="side_area">
+                <div class="user_area">
+                    <div class="my_thumb">
+                        <span class="p_img"><img src="/icon/user_icon.gif"/></span>
+                    </div>
+                    <div class="my_info">
+                        <p class="p_nick" th:text="${session.nickname} + '님'"></p>
+                        <p class="p_id" th:text="'(' + ${session.idKey} + ')'"></p>
+                    </div>
+                    <div class="my_btn">
+                        <a href="/members/checkMemberPwd" class="btn_profile">회원정보수정</a>
+                    </div>
+                </div>
+                <div class="menu_area">
+                    <dl class="menu_lst">
+                        <dt><a id="link2" href="/members/myPage/myWish">관심상품</a></dt>
+                        <dt><span class="tit">활동내역</span></dt>
+                        <dd>
+                            <ul>
+                                <li><a id="link3" href="/members/myPage/myAct">내가 쓴 글</a></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="cont_area">
+                <div class="box my_wish" id="ajaxArea">
+                    <div class="head">
+                        <h2>관심상품</h2>
+                        <span class="wish_count">( [[${wishList.totalElements}]] )</span>
+                    </div>
+                    <div class="cont" id="MyWishListUl">
+						<div id="sort_option">
+							<ul>
+								<li class="sort_item" th:classappend="${sortMethod} == 'none' ? 'selected'"><a href="javascript:void(0);" id="latest" onclick="sortOption('none')">등록순</a></li>
+								<li class="sort_item" th:classappend="${sortMethod} == 'latest' ? 'selected'"><a href="javascript:void(0);" id="latest" onclick="sortOption('latest')">신상품순</a></li>
+				                <li class="sort_item" th:classappend="${sortMethod} == 'minPrice' ? 'selected'"><a href="javascript:void(0);" id="minPrice" onclick="sortOption('minPrice')">낮은 가격순</a></li>
+				                <li class="sort_item" th:classappend="${sortMethod} == 'maxPrice' ? 'selected'"><a href="javascript:void(0);" id="maxPrice" onclick="sortOption('maxPrice')">높은 가격순</a></li>
+			                </ul>
+                        </div>
+                        <div class="cont">
+                            <div class="ctrl_box clear">
+								<div class="chk">
+									<input type="checkbox" id="select_all" onclick="checkAll()">
+								</div>
+								<a href="javascript:wishDelete()" id="deleteBtn">삭제</a>
+							</div>
+
+                            <div id="wishProductListArea">
+                                <table id="prodList">
+                                    <thead class="th_blind" style="display: none;">
+                                        <tr>
+                                            <th scope="col" class="check">선택</th>
+                                            <th scope="col" class="img">상품 이미지</th>
+                                            <th scope="col" class="info">상품 정보</th>
+                                            <th scope="col" class="price">최저가 정보</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="prod: ${wishList}">
+	                                        <td class="check">
+												<div class="chk" align="center">
+													<input type="checkbox" th:value="${prod.pkey}" onclick="checkClick()">
+												</div>
+											</td>
+					                        <td class="image">
+					                            <a th:href="@{'/notebook/info/' + ${prod.pkey}}" target="_blank">
+					                            	<img th:src="${prod.image}" th:alt="${prod.name}">
+					                            </a>
+					                        </td>
+					                        <td class="info">
+					                            <h3><a th:href="@{'/notebook/info/' + ${prod.pkey}}" target="_blank">[[${prod.name}]]</a></h3>
+					                            <p>[[${prod.spec}]]</p>
+					                            <p class="regDate">등록월 [[${prod.regdate}]]</p>
+					                        </td>
+					                        <td class="price">
+												<span class="price">
+                                                	<em class="num">[[${#numbers.formatInteger(prod.price, 0, 'COMMA')}]]</em>원
+                                            	</span>
+                                            </td>
+					                    </tr>
+                                    </tbody>
+                                </table>
+                                
+                                <div class="nothing" th:if="${wishList.totalElements == 0}" align="center">
+				                	<p>관심 상품이 없습니다.</p>
+				                </div>
+				                
+				                <nav th:if="${wishList.totalElements != 0}" style="text-align: center;">
+									<ul class="pagination" th:with="start=${T(java.lang.Math).floor(wishList.number / 10) * 10 + 1}, last=(${start + 9 < wishList.totalPages ? start + 9 : wishList.totalPages})">
+								        <li>
+								            <a th:onclick="|javascript:pageSelect('1')|" aria-label="First">
+								                <span aria-hidden="true">First</span>
+								            </a>
+								        </li>
+								
+								        <li th:class="${wishList.first} ? 'disabled'">
+								            <a th:onclick="|javascript:pageSelect('${wishList.number}')|" aria-label="Previous">
+								                <span aria-hidden="true">&lt;</span>
+								            </a>
+								        </li>
+								
+								        <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == wishList.number + 1} ? 'active'">
+								            <a th:text="${page}" th:onclick="|javascript:pageSelect('${page}')|"></a>
+								        </li>
+								
+								        <li th:class="${wishList.last} ? 'disabled'">
+								            <a th:onclick="|javascript:pageSelect('${wishList.number + 2}')|" aria-label="Next">
+								                <span aria-hidden="true">&gt;</span>
+								            </a>
+								        </li>
+								
+								        <li>
+								            <a th:onclick="|javascript:pageSelect('${wishList.totalPages}')|" aria-label="Last">
+								                <span aria-hidden="true">Last</span>
+								            </a>
+								        </li>
+								    </ul>
+								</nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+		
+		<th:block th:replace="fragments/footer :: footer"></th:block>
+	</div>
+    
+<script type="text/javascript">
+$(".btn_profile").click(() => {
+    return confirm("회원정보를 수정하시겠습니까?");
+});
+
+
+function checkAll() {
+	if($(".chk #select_all").is(":checked")) {
+		$(".chk input:checkbox").prop("checked", true);
+	}
+	else {
+		$(".chk input:checkbox").prop("checked", false);
+	}
+}
+
+var sortMethod = "latest";
+function sortOption(sort) {
+	sortMethod = sort;
+	console.log(sortMethod);
+	
+	$.ajax({
+		type: 'POST',
+		url: '/members/myPage/myWish/sort',
+        data: {"sort": sortMethod},
+	}).done(function (fragment) { 
+		$("#ajaxArea").replaceWith(fragment);
+	});
+}
+
+function pageSelect(pageNumber) {
+	$.ajax({
+		type: 'POST',
+		url: '/members/myPage/myWish/sort?page=' + pageNumber,
+        data: {"sort": sortMethod},
+	}).done(function (fragment) { 
+		$("#ajaxArea").replaceWith(fragment);
+	});
+}
+
+function checkClick() {
+	if($("#wishProductListArea .chk input:checkbox:checked").length == $("#wishProductListArea .chk").length) {
+		$("#select_all").prop("checked", true);
+	}
+	else {
+		$("#select_all").prop("checked", false);
+	}
+}
+
+function wishDelete() {
+	var pkeyArray = [];
+	   
+	$("#wishProductListArea .chk input:checkbox:checked").each(function(){
+		pkeyArray.push($(this).val());
+	});
+	   
+	if(pkeyArray == ""){
+		alert("삭제할 제품을 선택해주세요.");
+		return false;
+	}
+	else {
+		if(confirm("정말로 삭제하시겠습니까?")) {
+			$.ajax({
+				type: 'POST',
+				url: '/members/myPage/myWish/delete',
+				data: {"pkey": pkeyArray,
+					"sort": sortMethod}
+			}).done(function (fragment) { 
+				$("#ajaxArea").replaceWith(fragment);
+			});
+		}
+	}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+@charset "utf-8";
+
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background-color: #f5f5f5;
+}
+
+#wrap {
+    width: 600px;
+    height: 100%;
+    margin: 0 auto;
+    background-color: #fff;
+}
+
+#container {
+    width: 440px;
+    height: 1080px;
+    margin: 0 auto;
+    background-color: #fff;
+}
+
+header {
+    width: 440px;
+    height: 32px;
+    margin: 0 auto;
+    padding: 89px 0 0;
+    position: relative;
+    font-size: 0;
+}
+
+header .logo img {
+    width: 128px;
+}
+
+header .logo_txt {
+    display: inline-block;
+    margin-left: 12px;
+    font-size: 24px;
+    letter-spacing: -0.05em;
+    color: #333;
+    font-family: "Malgun Gothic","맑은 고딕";
+}
+
+.join_notice {
+    height: 60px;
+    display: block;
+    color: #2964E0;
+    font-size: 15px;
+    text-align: center;
+    line-height: 60px;
+    letter-spacing: -.9px;
+    background: #F6F8FF 0% 0% no-repeat padding-box;
+    margin-top: 38px;
+    margin-bottom: 5px;
+}
+
+form {
+    width: 100%;
+}
+
+label {
+	display: block;
+	line-height: 16px;
+    font-size: 16px;
+    color: #0f0f0f;
+    letter-spacing: -.96px;
+    padding-top: 20px;
+}
+
+input {
+    width: 100%;
+    height: 49px;
+    display: flex;
+    border: solid 1px #bfbfbf;
+    border-radius: 4px;
+    color: #333;
+    background: #fff;
+    padding: 10px 50px 10px 21px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+form .btn_join {
+    display: block;
+    width: 100%;
+    height: 52px;
+    line-height: 52px;
+    font-size: 17px;
+    font-weight: bold;
+    background-color: #E9E9E9;
+    color: #b2b2b2;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 0;
+    margin-top: 20px;
+}
+
+.error_txt {
+	display: none;
+	margin-top: 5px;
+    color: #db3838;
+    font-size: 13px;
+    letter-spacing: -.02em;
+}

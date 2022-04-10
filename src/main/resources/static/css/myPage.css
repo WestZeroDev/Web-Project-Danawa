@@ -1,0 +1,376 @@
+@charset "utf-8";
+
+body {
+    margin: 0;
+    display: block;
+    background-color: #fff;
+}
+
+div {
+    display: block;
+}
+
+div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, form, fieldset, p, button, strong, span {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul, li {
+    list-style: none;
+}
+
+#wrap {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #fff;
+    font-family: "Malgun Gothic","맑은 고딕","돋움",dotum,"굴림",gulim,Arial,sans-serif,"Apple SD Gothic Neo";
+    font-size: 13px;
+    letter-spacing: -0.2px;
+}
+
+#container {
+    width: 1100px;
+    margin: 0 auto;
+    padding: 20px 0 60px;
+    background-color: #fff;
+}
+
+#container:after, #container:before {
+    display: block;
+    overflow: hidden;
+    clear: both;
+    content: "";
+}
+
+.mypage_wrap {
+    position: relative;
+    margin: 20px auto;
+    padding: 20px 0 60px;
+    width: 1100px;
+    clear: both;
+}
+
+.side_area {
+    float: left;
+    width: 226px;
+    height: 600px;
+    border: 1px solid #e0e0e0;
+    margin: 0 32px 0 0;
+}
+
+.user_area {
+    padding: 16px 20px;
+}
+
+.my_thumb {
+    position: relative;
+    margin: 0 auto;
+    width: 80px;
+    height: 80px;
+}
+
+.my_thumb .p_img {
+    display: block;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.my_thumb .p_img img {
+    width: 100%;
+    height: 100%;
+}
+
+img {
+    vertical-align: top;
+    border: 0 none;
+}
+
+.my_info {
+    margin: 11px auto 7px;
+    text-align: center;
+    padding: 0;
+}
+
+.my_info .p_nick {
+    font-size: 13px;
+    color: #0f0f0f;
+    margin: 0;
+    padding: 0;
+}
+
+.my_info .p_id {
+    font-size: 13px;
+    color: #666;
+    line-height: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+.my_btn {
+    margin-top: 14px;
+    text-align: center;
+}
+
+.my_btn a {
+    text-decoration: none;
+}
+
+.btn_profile {
+    display: inline-block;
+    padding: 1px 9px 1px;
+    border: 1px solid #bfbfbf;
+    font-size: 12px;
+    color: #666;
+    letter-spacing: -0.1em;
+}
+
+dl {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.side_area ul {
+    padding-inline-start: 40px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul, li {
+    list-style: none;
+}
+
+.menu_lst {
+    margin: 0;
+    padding: 0;
+}
+
+.menu_lst dt span {
+    display: block;
+    margin-top: 14px;
+    padding: 18px 0 0 20px;
+    border-top: 1px solid #e0e0e0;
+    font-size: 17px;
+    color: #0f0f0f;
+    font-weight: bold;
+    letter-spacing: -0.6px;
+}
+
+.menu_lst a {
+    display: block;
+}
+
+dd {
+    display: block;
+    margin-inline-start: -40px;
+}
+
+.menu_lst dd a {
+    padding: 10px 0 0 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.menu_lst dd ul {
+    margin: 6px 0 18px;
+}
+
+.menu_lst dt a {
+    padding: 14px 0 0 20px;
+    border-top: 1px solid #e0e0e0;
+    font-size: 17px;
+    color: #0f0f0f;
+    font-weight: bold;
+}
+
+.cont_area {
+    width: 840px;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.box {
+    padding-bottom: 20px;
+}
+
+.head {
+    margin: 16px 0 12px;
+    clear: both;
+    position: relative;
+}
+
+.head h2 {
+    display: inline-block;
+    font-size: 20px;
+    line-height: 22px;
+    color: #0f0f0f;
+    letter-spacing: -0.8px;
+    margin: 0;
+    padding: 0;
+}
+
+.box .btn_more {
+    display: inline-block;
+    font-size: 13px;
+    color: #666;
+    padding-left: 5px;
+}
+
+.cont {
+    position: relative;
+    clear: both;
+}
+
+.cont:after, .cont:before {
+    display: block;
+    overflow: hidden;
+    clear: both;
+    content: "";
+}
+
+/* 관심상품 */
+#wishDiv {
+    border-top: 1px solid #666;
+    border-bottom: 1px solid #bfbfbf;
+    display: block;
+    overflow: hidden;
+    clear: both;
+}
+
+.wish_list {
+    display: block;
+    padding: 0 20px;
+}
+
+.wish_list:after, .wish_list:before {
+    display: block;
+    overflow: hidden;
+    clear: both;
+    content: "";
+}
+
+.wish_item {
+    float: left;
+    width: 140px;
+    height: 220px;
+}
+
+.wish_item + .wish_item {
+    margin-left: 25px;
+}
+
+.wish_item span {
+    display: inline-block;
+}
+
+.wish_item .thumb {
+    width: 140px;
+    height: 140px;
+    vertical-align: top;
+}
+
+.wish_item .thumb img {
+    width: 100%;
+    height: 100%;
+}
+
+.wish_item .prod {
+    overflow: hidden;
+    width: 100%;
+    max-height: 40px;
+    margin: 5px 0 5px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #666;
+    letter-spacing: -0.4px;
+    word-break: break-all;
+}
+
+em {
+    font-style: normal;
+}
+
+.wish_item .price {
+    color: #0f0f0f;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.price .num {
+    color: #0f0f0f;
+    font-size: 18px;
+    letter-spacing: 0;
+}
+
+.wish_list .nothing {
+	padding: 90px 0;
+}
+
+.wish_list li:nth-of-type(n + 6) { display: none; }
+
+/* 활동내역 */
+#actDiv {
+    float: left;
+    width: 250px;
+}
+
+#actDiv .act_box_top {
+    margin: 4px 0 13px 0;
+}
+
+#actDiv .act_box_top .title {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #0f0f0f;
+}
+
+#actDiv .act_list {
+    border-top: 1px solid #33383e;
+    border-bottom: 1px solid #bfbfbf;
+}
+
+#actDiv li {
+    display: block;
+    width: 250px;
+    height: 32px;
+    line-height: 32px;
+    overflow: hidden;
+}
+
+#actDiv li + li { border-top: 1px solid #f2f2f2; }
+
+#actDiv li .my_article {
+    float: left;
+    padding-left: 10px;
+    font-size: 13px;
+    color: #666;
+    max-width: 90%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+#actDiv li:nth-of-type(n + 6) { display: none; }

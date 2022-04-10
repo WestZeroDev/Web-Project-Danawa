@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/modifyMember.css}">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+    <div id="wrap">
+        <div id="container">
+            <div id="header">
+                <a href="/" class="logo">
+                    <img src="http://guide.danawa.com/pcweb/download/danawa_RGB.png">
+                </a>
+                <h2 class="logo-txt">회원정보 수정</h2>
+            </div>
+
+            <div class="modify_wrap">
+            	<form action="/members/modifyMember" method="post" id="modify_form">
+                <table>
+                    <tbody>
+                    <tr class="modify_row">
+                        <td class="modify_title">아이디</td>
+                        <td class="modify_cont" th:text="${session.idKey}"></td>
+                    </tr>
+                    <tr class="modify_row">
+                        <td class="modify_title">비밀번호</td>
+                        <td class="modify_cont" id="pwd_cont">
+                            <button type="button" class="change_pwd_btn">비밀번호 변경</button>
+                        </td>
+                        <td class="change_pw" id="change_pw_area" style="display: none">
+                            <div class="inpt_pw_area">
+                                <label for="nowPassword" class="change_pw_txt">현재 비밀번호</label>
+                                <input type="password" id="pwd" name="pwd" class="input_pw">
+                                <div id="ajaxPwd"><input type="hidden" id="pwdValid" th:value="${pwdValid}"></div>
+                            	<div class="error_txt pwd"></div>
+                            </div>
+
+                            <div class="inpt_pw_area">
+                                <label for="newPassword" class="change_pw_txt">새 비밀번호</label>
+                                <input type="password" id="newPwd" name="newPwd" class="input_pw">
+                            	<div class="error_txt newPwd"></div>
+                            </div>
+
+                            <div class="inpt_pw_area">
+                                <label for="passwordConfirm" class="change_pw_txt">비밀번호 확인</label>
+                                <input type="password" id="newPwdChk" name="newPwdChk" class="input_pw">
+                            	<div class="error_txt newPwdChk"></div>
+                            </div>
+
+                            <div class="btn_area">
+                                <button type="button" class="btn_pw" id="change-confirm" onclick="checkForm()">확인</button>
+                                <button type="button" class="btn_pw cancle" id="change_cancel">취소</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="modify_row">
+                        <td class="modify_title">닉네임</td>
+                        <td class="modify_cont">
+                        	<input type="hidden" id="original_nickname" th:value="${session.nickname}">
+                            <input type="text" id="nickname" name="nickname" th:value="${session.nickname}" placeholder="닉네임"/><br/>
+                            <div id="ajaxNickname"><input type="hidden" id="nicknameValid" th:value="${nicknameValid}"></div>
+                            <div class="error_txt nickname"></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </form>
+
+                <div class="bundle_btn">
+                    <a href="/members/secede" class="leave_btn">탈퇴하기</a>
+                </div>
+            </div>
+
+            <div class="btn_wrap">
+                <a href="/members/myPage" class="btn_submit cancel">취소</a>
+                <a href="javascript:void(0)" class="btn_submit accept" onclick="return checkForm()">확인</a>
+            </div>
+            
+        </div>
+    </div>
+    
+<script type="text/javascript">
+var pwdChk = false;
+var newPwdChk = false;
+var newPwdConfirm = false;
+var nicknameChk = false;
+var original_nickname = $("#original_nickname").val();
+
+$(".change_pwd_btn").click(() => {
+    $("#pwd_cont").hide();
+    $("#change_pw_area").show();
+});
+
+$("#change_cancel").click(() => {
+    $("#change_pw_area").hide();
+    $("#pwd_cont").show();
+   	$("#pwd")[0].reset();
+	$("#pwdChk")[0].reset();
+	$("#newPwd")[0].reset();
+})
+
+$(".leave_btn").click(() => {
+    return confirm("탈퇴하시겠습니까?");
+});
+
+function pwdAjax() {
+	var pwd = $("#pwd").val();
+	
+	$.ajax({ 
+		url: "/members/pwd",
+		data: {'pwd': pwd},
+		type: "POST",
+	}).done(function (fragment) { 
+		$("#ajaxPwd").replaceWith(fragment);
+	});
+	
+	var valid = $("#pwdValid").val();
+	
+	if(valid == 'true') {
+		$(".pwd").hide();
+		pwdChk = true;
+	}
+	else if(valid == 'false') {
+		$(".pwd").text('비밀번호가 일치하지 않습니다.');
+		$(".pwd").show();
+	}
+}
+
+$("#pwd").keyup(pwdAjax);
+$("#pwd").focusout(pwdAjax);
+
+$("#newPwd").keyup(function() {
+	var pwd = $("#newPwd").val();
+	var regExp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+]).{8,20}$/;
+
+	$(".newPwd").text('숫자, 영문, 특수문자 포함 8자 이상으로 입력해주세요.');
+	$(".newPwd").show();
+
+	if(regExp.test(pwd)) {
+		$(".newPwd").hide();
+		newPwdChk = true;
+	}
+	else if(pwd.length > 20) {
+		$(".newPwd").text('너무 깁니다. 20자 이하로 입력해주세요.');
+	}
+	
+	if(pwd == "") {
+		$(".newPwd").text('비밀번호를 입력해주세요.');
+	}
+});
+
+$("#newPwdChk").keyup(function() {
+	var pwd = $("#newPwd").val();
+	var pwdChk = $("#newPwdChk").val();
+
+	$(".newPwdChk").text('새 비밀번호가 일치하지 않습니다.');
+	$(".newPwdChk").show();
+
+	if(pwd == pwdChk) {
+		$(".newPwdChk").hide();
+		newPwdConfirm = true;
+	}
+	
+	if(pwdChk == "") {
+		$(".newPwdChk").text('비밀번호를 입력해주세요.');
+	}
+});
+
+function ajaxNickname() {
+	var nickname = $("#nickname").val();
+	var count = 0;
+	var regExp = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
+	
+	for(var i = 0; i < nickname.length; i++) {
+		if(escape(nickname.charAt(i)).length == 6) {
+			count += 2;
+		}
+		else count += 1;
+	}
+	
+	if(regExp.test(nickname) && count >= 4 && count <= 16) {
+		if(nickname == original_nickname) {
+			nicknameChk = true;
+			$(".nickname").hide();
+		}
+		else {
+			$.ajax({ 
+				url: "/members/join/nickname",
+				data: {'nickname': nickname},
+				type: "POST",
+			}).done(function (fragment) { 
+				$("#ajaxNickname").replaceWith(fragment);
+			});
+			
+			var valid = $("#nicknameValid").val();
+			
+			if(valid == 'true') {
+				$(".nickname").hide();
+				nicknameChk = true;
+			}
+			else if(valid == 'false') {
+				$(".nickname").text('이미 사용중인 닉네임입니다.');
+				$(".nickname").show();
+			}
+		}
+	}
+	else {
+		$(".nickname").text('한글 2~8자, 영문 4~16자까지 가능합니다.');
+		$(".nickname").show();
+	}
+	
+	if(nickname == "") {
+		$(".nickname").text('닉네임을 입력해주세요.');
+	}
+}
+
+$("#nickname").keyup(ajaxNickname);
+$("#nickname").focusout(ajaxNickname);
+
+function checkForm() {
+	if($("#nickname").val() == "") {
+		alert("닉네임을 입력해주세요.");
+		return false;
+	}
+	if($("#nickname").val() == original_nickname) {
+		nicknameChk = true;
+	}
+	if($("#pwd").val() == "" || $("#newPwd").val() == "" || $("#newPwdChk").val() == "") {
+		pwdChk = true;
+		newPwdChk = true;
+		newPwdConfirm = true;
+	}
+	if(pwdChk && newPwdChk && newPwdConfirm && nicknameChk) {
+		$("form").submit();
+		return true;
+	}
+}
+</script>
+</body>
+</html>

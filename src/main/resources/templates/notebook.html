@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragments/head :: head"></th:block>
+    <link rel="stylesheet" th:href="@{/css/notebook.css}">
+</head>
+<body>
+	<div id="wrap">
+    	<th:block th:replace="fragments/header :: header"></th:block>
+    	
+    	<div id="container" class="prod_wrap">
+            <div class="head" align="left">
+                <h3>상세검색</h3>
+            </div>
+
+            <table id="serach_option">
+                <tr>
+                    <th class="keyfield">제조사별</th>
+                    <td><label title="LG전자"><input type="checkbox" name="brand" id="LG전자" value="LG전자" onclick="checkOption()">LG전자</label></td>
+                    <td><label title="삼성전자"><input type="checkbox" name="brand" id="삼성전자" value="삼성전자" onclick="checkOption()">삼성전자</label></td>
+                    <td><label title="레노버"><input type="checkbox" name="brand" id="레노버" value="레노버" onclick="checkOption()">레노버</label></td>
+                    <td><label title="MSI"><input type="checkbox" name="brand" id="MSI" value="MSI" onclick="checkOption()">MSI</label></td>
+                    <td><label title="APPLE"><input type="checkbox" name="brand" id="APPLE" value="APPLE" onclick="checkOption()">APPLE</label></td>
+                </tr>
+                <tr>
+                    <th class="keyfield" rowspan="2">CPU</th>
+                    <td><label title="코어i5-11세대"><input type="checkbox" name="cpu" value="코어i5-11세대" onclick="checkOption()">코어i5-11세대</label></td>
+                    <td><label title="코어i7-11세대"><input type="checkbox" name="cpu" value="코어i7-11세대" onclick="checkOption()">코어i7-11세대</label></td>
+                    <td><label title="코어i5-12세대"><input type="checkbox" name="cpu" value="코어i5-12세대" onclick="checkOption()">코어i5-12세대</label></td>
+                    <td><label title="코어i7-12세대"><input type="checkbox" name="cpu" value="코어i7-12세대" onclick="checkOption()">코어i7-12세대</label></td>
+                    <td><label title="코어i3-11세대"><input type="checkbox" name="cpu" value="코어i3-11세대" onclick="checkOption()">코어i3-11세대</label></td>
+                </tr>
+                <tr>
+                    <td><label title="라이젠5-4세대"><input type="checkbox" name="cpu" value="라이젠5-4세대" onclick="checkOption()">라이젠5-4세대</label></td>
+                    <td><label title="라이젠7-4세대"><input type="checkbox" name="cpu" value="라이젠7-4세대" onclick="checkOption()">라이젠7-4세대</label></td>
+                    <td><label title="라이젠7-5세대"><input type="checkbox" name="cpu" value="라이젠7-5세대" onclick="checkOption()">라이젠7-5세대</label></td>
+                    <td><label title="라이젠3-4세대"><input type="checkbox" name="cpu" value="라이젠3-4세대" onclick="checkOption()">라이젠3-4세대</label></td>
+                    <td><label title="코어i9-12세대"><input type="checkbox" name="cpu" value="코어i9-12세대" onclick="checkOption()">코어i9-12세대</label></td>
+                </tr>
+                <tr>
+                    <th class="keyfield">화면 크기</th>
+                    <td><label title="17인치대"><input type="checkbox" name="size" value="17" onclick="checkOption()">17인치대</label></td>
+                    <td><label title="16인치대"><input type="checkbox" name="size" value="16" onclick="checkOption()">16인치대</label></td>
+                    <td><label title="15인치대"><input type="checkbox" name="size" value="15" onclick="checkOption()">15인치대</label></td>
+                    <td><label title="14인치대"><input type="checkbox" name="size" value="14" onclick="checkOption()">14인치대</label></td>
+                    <td><label title="13인치대"><input type="checkbox" name="size" value="13" onclick="checkOption()">13인치대</label></td>
+                </tr>
+                <tr>
+                    <th class="keyfield">메모리</th>
+                    <td><label title="64GB"><input type="checkbox" name="memory" value="64GB" onclick="checkOption()">64GB</label></td>
+                    <td><label title="32GB"><input type="checkbox" name="memory" value="32GB" onclick="checkOption()">32GB</label></td>
+                    <td><label title="16GB"><input type="checkbox" name="memory" value="16GB" onclick="checkOption()">16GB</label></td>
+                    <td><label title="8GB"><input type="checkbox" name="memory" value="8GB" onclick="checkOption()">8GB</label></td>
+                    <td><label title="4GB"><input type="checkbox" name="memory" value="4GB" onclick="checkOption()">4GB</label></td>
+                </tr>
+                <tr>
+                    <th class="keyfield">저장 용량</th>
+                    <td><label title="1TB 초과"><input type="checkbox" name="storage" value="1001" onclick="checkOption()">1TB 초과</label></td>
+                    <td><label title="1TB"><input type="checkbox" name="storage" value="1000" onclick="checkOption()">1TB~513GB</label></td>
+                    <td><label title="512GB"><input type="checkbox" name="storage" value="512" onclick="checkOption()">512~257GB</label></td>
+                    <td><label title="256GB"><input type="checkbox" name="storage" value="256" onclick="checkOption()">256~129GB</label></td>
+                    <td><label title="128GB"><input type="checkbox" name="storage" value="128" onclick="checkOption()">128~120GB</label></td>
+                </tr>
+                <tr>
+                    <th class="keyfield">운영체제</th>
+                    <td><label title="미포함(프리도스)"><input type="checkbox" name="os" value="미포함(프리도스)" onclick="checkOption()">미포함(프리도스)</label></td>
+                    <td><label title="윈도우10"><input type="checkbox" name="os" value="윈도우10" onclick="checkOption()">윈도우10</label></td>
+                    <td><label title="윈도우10프로"><input type="checkbox" name="os" value="윈도우10프로" onclick="checkOption()">윈도우10프로</label></td>
+                    <td><label title="윈도우11프로"><input type="checkbox" name="os" value="윈도우11프로" onclick="checkOption()">윈도우11프로</label></td>
+                    <td><label title="윈도우11홈"><input type="checkbox" name="os" value="윈도우11홈" onclick="checkOption()">윈도우11홈</label></td>
+                </tr>
+                <tr>
+                    <th class="keyfield">무게</th>
+                    <td><label title="1kg 미만"><input type="checkbox" name="weight" value="10" onclick="checkOption()">1kg 미만</label></td>
+                    <td><label title="1.0~1.4kg"><input type="checkbox" name="weight" value="1014" onclick="checkOption()">1.0~1.4kg</label></td>
+                    <td><label title="1.4~1.7kg"><input type="checkbox" name="weight" value="1417" onclick="checkOption()">1.4~1.7kg</label></td>
+                    <td><label title="1.7~2.0kg"><input type="checkbox" name="weight" value="1720" onclick="checkOption()">1.7~2.0kg</label></td>
+                    <td><label title="2kg 초과"><input type="checkbox" name="weight" value="20" onclick="checkOption()">2kg 초과</label></td>
+                </tr>
+                <tr><td><a href="javascript:void(0)" onclick="resetOption()">검색초기화</a><td></tr>
+            </table>
+            
+            <input type="hidden" id="idKey" name="idKey" th:value="${session.idKey}">
+
+            <div id="ajaxArea">
+				<div id="result_info">
+					<span>결과</span>
+					<span class="prod_count">([[${prodList.totalElements}]])</span>
+				</div>
+            
+                <div id="sort_option">
+                	<ul>
+	                    <li class="sort_item" th:classappend="${sortMethod} == 'latest' ? 'selected'"><a href="javascript:void(0);" id="latest" onclick="sortOption('latest')">신상품순</a></li>
+	                    <li class="sort_item" th:classappend="${sortMethod} == 'minPrice' ? 'selected'"><a href="javascript:void(0);" id="minPrice" onclick="sortOption('minPrice')">낮은 가격순</a></li>
+	                    <li class="sort_item" th:classappend="${sortMethod} == 'maxPrice' ? 'selected'"><a href="javascript:void(0);" id="maxPrice" onclick="sortOption('maxPrice')">높은 가격순</a></li>
+                    </ul>
+                </div>
+                                
+                <div id="inner_search">
+					<input type="text" id="innerSearchKeyword" name="innerSearchKeyword" class="search_input" placeholder="리스트 내 검색" title="리스트 내 검색">
+					<button class="submit_search_list" type="button" onclick="innerSearch()"></button>
+				</div>
+				
+                <div id="price_option">
+                    <span class="prod_price_selector">
+                        <label for="priceRangeMinPrice" class="price_label min_price_label"></label>
+                        <input type="text" class="price_input min_price_input" placeholder="최소 가격" title="검색될 최소 가격 입력" 
+                        name="priceRangeMinPrice" id="priceRangeMinPrice" onKeyup="this.value=this.value.replace(/[^0-9]/g, '');">
+                    </span> ~ 
+                    <span class="prod_price_selector">
+                        <label for="priceRangeMaxPrice" class="price_label max_price_label"></label>
+                        <input type="text" class="price_input max_price_input" placeholder="최대 가격" title="검색될 최대 가격 입력" 
+                        name="priceRangeMaxPrice" id="priceRangeMaxPrice" onKeyup="this.value=this.value.replace(/[^0-9]/g, '');">
+                    </span>
+                    <button type="button" class="btn_search" onclick="priceOption()">검색</button>
+                </div>
+				
+                <table id="prod_list">
+                    <thead style="display: none;">
+                        <tr>
+                            <th class="image">썸네일</th>
+                            <th class="info">제품명, 상세스펙</th>
+                            <th class="price">가격</th>
+                            <th class="wish">관싱삼품</th>
+                        </tr>
+                    </thead>
+                    <tr th:each="prod: ${prodList}">
+                        <td class="image">
+                            <a th:href="@{'/notebook/info/' + ${prod.pkey}}" target="_blank">
+                            	<img th:src="${prod.image}" th:alt="${prod.name}">
+                            </a>
+                        </td>
+                        <td class="info">
+                            <h3><a th:href="@{'/notebook/info/' + ${prod.pkey}}" target="_blank">[[${prod.name}]]</a></h3>
+                            <p>[[${prod.spec}]]</p>
+                            <p class="regDate">등록월 [[${prod.regdate}]]</p>
+                        </td>
+                        <td class="price">
+                            <p><strong>[[${#numbers.formatInteger(prod.price, 0, 'COMMA')}]]</strong>원</p>
+                        </td>
+                        <td class="wish">
+                            <a href="javascript:void(0)" th:onclick="|javascript:wish('${prod.pkey}')|">관심등록</a>
+                        </td>
+                    </tr>
+                </table>
+                
+                <div class="nothing" th:if="${prodList.totalElements == 0}" align="center">
+                	<p>옵션에 해당하는 상품이 없습니다.</p>
+                </div>
+                
+                <nav th:if="${prodList.totalElements != 0}" style="text-align: center;">
+					<ul class="pagination" th:with="start=${T(java.lang.Math).floor(prodList.number / 10) * 10 + 1}, last=(${start + 9 < prodList.totalPages ? start + 9 : prodList.totalPages})">
+				        <li>
+				            <a th:onclick="|javascript:pageSelect('1')|" aria-label="First">
+				                <span aria-hidden="true">First</span>
+				            </a>
+				        </li>
+				
+				        <li th:class="${prodList.first} ? 'disabled'">
+				            <a th:onclick="|javascript:pageSelect('${prodList.number}')|" aria-label="Previous">
+				                <span aria-hidden="true">&lt;</span>
+				            </a>
+				        </li>
+				
+				        <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == prodList.number + 1} ? 'active'">
+				            <a th:text="${page}" th:onclick="|javascript:pageSelect('${page}')|"></a>
+				        </li>
+				
+				        <li th:class="${prodList.last} ? 'disabled'">
+				            <a th:onclick="|javascript:pageSelect('${prodList.number + 2}')|" aria-label="Next">
+				                <span aria-hidden="true">&gt;</span>
+				            </a>
+				        </li>
+				
+				        <li>
+				            <a th:onclick="|javascript:pageSelect('${prodList.totalPages}')|" aria-label="Last">
+				                <span aria-hidden="true">Last</span>
+				            </a>
+				            <input type="hidden" id="totalPages" th:value="${prodList.totalPages}">
+				        </li>
+				    </ul>
+				</nav>
+			</div>
+		</div>
+		
+		<th:block th:replace="fragments/footer :: footer"></th:block>
+	</div>
+	
+<script>
+var sortMethod = '';
+function sortOption(sort) {
+	sortMethod = sort;
+	console.log(sortMethod);
+	checkOption();
+}
+
+var minPriceInput = '';
+var maxPriceInput = '';
+function priceOption() {
+	minPriceInput = $("#priceRangeMinPrice").val();
+	maxPriceInput = $("#priceRangeMaxPrice").val();
+	
+	if(minPriceInput == '' || maxPriceInput == '') {
+		alert("가격을 입력하세요.");
+		return false;
+	}
+	else if(Number(minPriceInput) > Number(maxPriceInput)) {
+		alert("최소 가격은 최대 가격보다 적어야 합니다.");
+		return false;
+	}
+	else {
+		checkOption();
+	}
+}
+
+var searchKeyword = '';
+function innerSearch() {
+	searchKeyword = $("#innerSearchKeyword").val();
+	if(searchKeyword == '') {
+		alert("검색어를 입력하세요.");
+		return false;
+	}
+	else {
+		checkOption();
+	}
+}
+
+function resetOption() {
+	$("input:checkbox").prop("checked", false);
+	sortMethod = "latest";
+	minPriceInput = '';
+	maxPriceInput = '';
+	searchKeyword = '';
+	checkOption();
+}
+
+function checkOption() {
+	var brandList = [];
+	$("input:checkbox[name=brand]:checked").each(function() {
+		var chk = $(this).val();
+		brandList.push(chk);
+	});
+	
+	var cpuList = [];
+	$("input:checkbox[name=cpu]:checked").each(function() {
+		var chk = $(this).val();
+		cpuList.push(chk);
+	});
+	
+	var sizeList = [];
+	$("input:checkbox[name=size]:checked").each(function() {
+		var chk = $(this).val();
+		sizeList.push(chk);
+	});
+	
+	var memoryList = [];
+	$("input:checkbox[name=memory]:checked").each(function() {
+		var chk = $(this).val();
+		memoryList.push(chk);
+	});
+	
+	var storageList = [];
+	$("input:checkbox[name=storage]:checked").each(function() {
+		var chk = $(this).val();
+		storageList.push(chk);
+	});
+	
+	var osList = [];
+	$("input:checkbox[name=os]:checked").each(function() {
+		var chk = $(this).val();
+		osList.push(chk);
+	});
+	
+	var weightList = [];
+	$("input:checkbox[name=weight]:checked").each(function() {
+		var chk = $(this).val();
+		weightList.push(chk);
+	});
+	
+	$.ajax({
+		type: 'POST',
+		url: '/notebook/option',
+        data: {"brand":brandList,
+        		"cpu":cpuList,
+        		"size":sizeList,
+        		"memory":memoryList,
+        		"storage":storageList,
+        		"os":osList,
+        		"weight":weightList,
+        		"sort":sortMethod,
+        		"minPrice":minPriceInput,
+        		"maxPrice":maxPriceInput,
+        		"keyword":searchKeyword}
+	}).done(function (fragment) { 
+		$("#ajaxArea").replaceWith(fragment);
+		$("#priceRangeMinPrice").val(minPriceInput);
+		$("#priceRangeMaxPrice").val(maxPriceInput);
+		$("#innerSearchKeyword").val(searchKeyword);
+	});
+}
+
+function pageSelect(pageNumber) {
+	if(Number(pageNumber) > Number($("#totalPages").val())) {
+		return;
+	}
+	
+	var brandList = [];
+	$("input:checkbox[name=brand]:checked").each(function() {
+		var chk = $(this).val();
+		brandList.push(chk);
+	});
+	
+	var cpuList = [];
+	$("input:checkbox[name=cpu]:checked").each(function() {
+		var chk = $(this).val();
+		cpuList.push(chk);
+	});
+	
+	var sizeList = [];
+	$("input:checkbox[name=size]:checked").each(function() {
+		var chk = $(this).val();
+		sizeList.push(chk);
+	});
+	
+	var memoryList = [];
+	$("input:checkbox[name=memory]:checked").each(function() {
+		var chk = $(this).val();
+		memoryList.push(chk);
+	});
+	
+	var storageList = [];
+	$("input:checkbox[name=storage]:checked").each(function() {
+		var chk = $(this).val();
+		storageList.push(chk);
+	});
+	
+	var osList = [];
+	$("input:checkbox[name=os]:checked").each(function() {
+		var chk = $(this).val();
+		osList.push(chk);
+	});
+	
+	var weightList = [];
+	$("input:checkbox[name=weight]:checked").each(function() {
+		var chk = $(this).val();
+		weightList.push(chk);
+	});
+	
+	$.ajax({
+		type: 'POST',
+		url: '/notebook/option?page=' + pageNumber,
+        data: {"brand":brandList,
+        		"cpu":cpuList,
+        		"size":sizeList,
+        		"memory":memoryList,
+        		"storage":storageList,
+        		"os":osList,
+        		"weight":weightList,
+        		"sort":sortMethod,
+        		"minPrice":minPriceInput,
+        		"maxPrice":maxPriceInput,
+        		"keyword":searchKeyword}
+	}).done(function (fragment) { 
+		$("#ajaxArea").replaceWith(fragment);
+		$("#priceRangeMinPrice").val(minPriceInput);
+		$("#priceRangeMaxPrice").val(maxPriceInput);
+		$("#innerSearchKeyword").val(searchKeyword);
+	});
+}
+
+function wish(pkeyInput) {
+	if($("#idKey").val() == "") {
+		alert("로그인 후 이용 가능합니다.");
+		return false;
+	}
+	
+	$.ajax({
+		type: 'POST',
+		url: '/members/wish/register',
+        data: {"pkey": pkeyInput},
+        success: function(msg) {
+            alert(msg);
+        }
+	});
+}
+</script>
+</body>

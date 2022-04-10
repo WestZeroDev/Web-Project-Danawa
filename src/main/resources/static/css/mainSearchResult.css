@@ -1,0 +1,235 @@
+@charset "utf-8";
+
+body {
+    margin: 0;
+    display: block;
+    background-color: #fff;
+}
+
+div {
+    display: block;
+}
+
+div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, form, fieldset, p, button, strong, span {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul, li {
+    list-style: none;
+}
+
+#wrap {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #fff;
+    font-family: "Malgun Gothic","맑은 고딕","돋움",dotum,"굴림",gulim,Arial,sans-serif,"Apple SD Gothic Neo";
+    font-size: 13px;
+    letter-spacing: -0.2px;
+}
+
+#container {
+    width: 900px;
+    margin: 0 auto;
+    padding: 20px 0 40px;
+    background-color: #fff;
+}
+
+#container:after, #container:before {
+    display: block;
+    overflow: hidden;
+    clear: both;
+    content: "";
+}
+
+#container .head {
+    margin: 12px;
+    clear: both;
+    position: relative;
+}
+
+#container .head h3 {
+    display: inline-block;
+    font-size: 20px;
+    color: #0f0f0f;
+    letter-spacing: -0.8px;
+    margin: 0;
+    padding: 0;
+}
+
+.count {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: bold;
+    color: #0f0f0f;
+	padding-left: 6px;
+}
+
+.btn_more {
+    display: inline-block;
+    font-size: 13px;
+    color: #666;
+    padding-left: 15px;
+}
+
+/* 노트북 검색 결과 */
+.prod_result {
+	margin-bottom: 40px;
+}
+
+#prod_list {
+    display: block;
+    clear: both;
+    width: 900px;
+    margin: 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-top: 1px solid #bfbfbf;
+    margin-bottom: 20px;
+}
+
+#prod_list .image img {
+    width: 130px;
+    height: 130px;
+}
+
+#prod_list .info h3 {
+    font-size: 15px;
+	color: #000000;
+	padding-bottom: 5px;
+}
+
+#prod_list .info p {
+	font-size: 12px;
+	line-height: 20px;
+	color: #666;
+}
+
+#prod_list .info .regDate {
+	font-size: 13px;
+	padding-top: 10px;
+}
+
+#prod_list .price p {
+	font-size: 13px;
+    color: #2964e0;
+    letter-spacing: -0.022em;
+}
+
+#prod_list .price p strong {
+	font-size: 15px;
+    color: #2964e0;
+    letter-spacing: -0.022em;
+}
+
+#prod_list .wish a {
+	font-size: 12px;
+	color: #666;
+	letter-spacing: -0.022em;
+}
+
+#prod_list tr { border-bottom: 1px solid #f0f0f0; }
+#prod_list td.image { width: 16%; text-align: center; }
+#prod_list td.info { width: 70%; text-align: left; padding: 20px 30px 20px 10px; }
+#prod_list td.price { width: 10%; text-align: center; }
+#prod_list td.wish { width: 4%; text-align: center; }
+
+.pagination li {
+    display: inline-block;
+    list-style: none;
+}
+
+.pagination a {
+	display: inline-block;
+    list-style: none;
+    color: #0f0f0f;
+    padding: 4px 8px;
+    display: inline-block;
+    text-decoration: none;
+    border: 1px solid #bfbfbf;
+    cursor: pointer;
+}
+
+.pagination .active a {
+	font-weight: bold;
+}
+
+.pagination a:hover {
+	background-color: #f4f9fc;
+}
+
+.nothing {
+    color: #333;
+	font-size: 15px;
+    font-weight: bold;
+    padding-top: 20px;
+    padding-bottom: 40px;
+	border-bottom: 1px solid #f0f0f0;
+	text-align: center;
+}
+
+/* 자유게시판 검색 결과 */
+.tbl {
+    clear: both;
+    width: 900px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+    border-width: 1px 0;
+    border-color: #bfbfbf;
+    border-style: solid;
+    margin-bottom: 20px;
+}
+
+.tbl thead {
+    height: 40px;
+    font-size: 14px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tbl tbody {
+    display: table-row-group;
+    vertical-align: middle;
+}
+
+.tbl tr {
+    display: table-row;
+    height: 40px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tbl .title { width: 62%; }
+.tbl .author { width: 12%; }
+.tbl .date { width: 12%; }
+.tbl .view { width: 7%; }
+.tbl .like { width: 7%; }
+
+td.author, td.date, td.view, td.like { text-align: center; }
+
+td.title {
+	width: 100%;
+	padding: 0 20px;
+}
+
+td.title #subject {
+	display: inline-block;
+	max-width: 90%;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+td.title #comment {
+	display: inline-block;
+	min-width: 10%;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: top;
+}
+
+.tbl tr:nth-of-type(n + 6) { display: none; }

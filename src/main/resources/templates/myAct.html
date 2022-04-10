@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragments/head :: head"></th:block>
+    <link rel="stylesheet" th:href="@{/css/myAct.css}">
+</head>
+<body>
+    <div id="wrap">
+        <th:block th:replace="fragments/header :: header"></th:block>
+
+		<div id="container" class="myPage_wrap">
+			<div class="side_area">
+				<div class="user_area">
+					<div class="my_thumb">
+						<span class="p_img"><img src="/icon/user_icon.gif" /></span>
+					</div>
+					<div class="my_info">
+						<p class="p_nick" th:text="${session.nickname} + '님'"></p>
+						<p class="p_id" th:text="'(' + ${session.idKey} + ')'"></p>
+					</div>
+					<div class="my_btn">
+						<a href="/members/checkMemberPwd" class="btn_profile">회원정보수정</a>
+					</div>
+				</div>
+				<div class="menu_area">
+					<dl class="menu_lst">
+						<dt>
+							<a id="link2" href="/members/myPage/myWish">관심상품</a>
+						</dt>
+						<dt>
+							<span class="tit">활동내역</span>
+						</dt>
+						<dd>
+							<ul>
+								<li><a id="link3" href="/members/myPage/myAct">내가 쓴 글</a></li>
+							</ul>
+						</dd>
+					</dl>
+				</div>
+			</div>
+
+			<div class="cont_area" id="ajaxPostArea">
+				<div class="box my_act">
+					<div class="head">
+						<h2>내가 쓴 글</h2>
+						<span class="post_count">( [[${boardList.totalElements}]] )</span>
+					</div>
+
+					<div class="cont" id="MyActList">
+						<div class="ctrl_box clear">
+							<div class="chk">
+								<input type="checkbox" id="select_all" onclick="checkAll()">
+							</div>
+							<a href="javascript:postDelete()" id="deleteBtn">삭제</a>
+						</div>
+
+						<div id="boardArea">
+							<table class="tbl act_tbl">
+								<colgroup>
+									<col class="title">
+									<col class="date">
+								</colgroup>
+								<thead class="th">
+									<tr>
+										<th scope="col" class="check">선택</th>
+										<th scope="col" class="title">제목</th>
+										<th scope="col" class="date">작성일</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="post: ${boardList}">
+										<td class="check">
+											<div class="chk">
+												<input type="checkbox" th:value="${post.fnum}" onclick="checkClick()">
+											</div>
+										</td>
+										<td class="title">
+											<a th:href="@{'/board/free/view/' + ${post.fnum}}" target="_blank"><span id="subject">[[${post.ftitle}]]</span></a><span id="comment" th:if="${post.fcomment != 0}">[[${post.fcomment}]]</span>
+										</td>
+										<td class="date" th:text="${post.fdate}"></td>
+									</tr>
+								</tbody>
+							</table>
+							
+							<nav th:if="${boardList.totalElements != 0}" style="text-align: center;">
+								<ul class="pagination" th:with="start=${T(java.lang.Math).floor(boardList.number / 5) * 5 + 1}, last=(${start + 4 < boardList.totalPages ? start + 4 : boardList.totalPages})">
+							        <li>
+							            <a th:href="@{/members/myPage/myAct(page=1)}" aria-label="First">
+							                <span aria-hidden="true">First</span>
+							            </a>
+							        </li>
+							
+							        <li th:class="${boardList.first} ? 'disabled'">
+							            <a th:href="${boardList.first} ? 'javascript:void(0)' :@{/members/myPage/myAct(page=${boardList.number})}" aria-label="Previous">
+							                <span aria-hidden="true">&lt;</span>
+							            </a>
+							        </li>
+							
+							        <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == boardList.number + 1} ? 'active'">
+							            <a th:text="${page}" th:href="@{/members/myPage/myAct(page=${page})}"></a>
+							        </li>
+							
+							        <li th:class="${boardList.last} ? 'disabled'">
+							            <a th:href="${boardList.last} ? 'javascript:void(0)' : @{/members/myPage/myAct(page=${boardList.number + 2})}" aria-label="Next">
+							                <span aria-hidden="true">&gt;</span>
+							            </a>
+							        </li>
+							
+							        <li>
+							            <a th:href="@{/members/myPage/myAct(page=${boardList.totalPages})}" aria-label="Last">
+							                <span aria-hidden="true">Last</span>
+							            </a>
+							        </li>
+							    </ul>
+							</nav>
+							
+							<div class="nothing" th:if="${boardList.totalElements == 0}" align="center"><p>작성한 글이 없습니다.</p></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<th:block th:replace="fragments/footer :: footer"></th:block>
+	</div>
+    
+<script type="text/javascript">
+$(".btn_profile").click(() => {
+    return confirm("회원정보를 수정하시겠습니까?");
+});
+
+
+function checkAll() {
+	if($(".chk #select_all").is(":checked")) {
+		$(".chk input:checkbox").prop("checked", true);
+	}
+	else {
+		$(".chk input:checkbox").prop("checked", false);
+	}
+}
+
+function checkClick() {
+	if($("#boardArea .chk input:checkbox:checked").length == $("#boardArea .chk").length) {
+		$("#select_all").prop("checked", true);
+	}
+	else {
+		$("#select_all").prop("checked", false);
+	}
+}
+
+function postDelete() {
+	var fnumArray = [];
+	   
+	$("#boardArea .chk input:checkbox:checked").each(function(){
+		fnumArray.push($(this).val());
+	});
+	   
+	if(fnumArray == ""){
+		alert("삭제할 게시물을 선택해주세요.");
+		return false;
+	}
+	else {
+		if(confirm("정말로 삭제하시겠습니까?")) {
+			$.ajax({
+				type: 'POST',
+				url: '/members/myPage/myAct/delete',
+				data: JSON.stringify(fnumArray),
+				contentType: 'application/json',
+			}).done(function (fragment) { 
+				$("#ajaxPostArea").replaceWith(fragment);
+			});
+		}
+	}
+}
+</script>
+</body>
+</html>

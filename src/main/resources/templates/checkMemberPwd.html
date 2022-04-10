@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/checkMemberPwd.css}">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+    <div id="wrap">
+        <div id="container">
+            <header>
+                <a href="/" class="logo">
+                    <img src="http://guide.danawa.com/pcweb/download/danawa_RGB.png">
+                </a>
+                <h2 class="logo-txt">회원정보 수정</h2>
+            </header>
+
+            <div class="check_top">
+				<h3 class="title">비밀번호 확인</h3>
+				<p class="txt">회원님의 정보를 보호하기 위해 비밀번호를 한 번 더 입력해주세요.</p>
+			</div>
+
+            <div class="check_content">
+				<form action="/members/checkMemberPwd" method="post" id="checkPwd_form">
+					<input type="hidden" name="url" value="#">
+					<div class="chk_form">
+						<div class="chk_txt">아이디</div>
+						<div class="chk_info" th:text="${session.idKey}"></div>
+					</div>
+					<div class="chk_form">
+						<div class="chk_txt"><label for="pwd">비밀번호</label></div>
+						<div class="chk_info">
+							<input type="password" id="pwd" name="pwd" class="chk_pw_ipt">
+							<input type="hidden" id="msg" name="msg" th:value="${msg}">
+						</div>
+					</div>
+					
+					<div class="button_wrap">
+						<a href="/members/myPage"><button type="button" class="cancel">취소</button></a>
+						<button type="submit" class="accept" onclick="checkForm()">확인</button>
+					</div>
+				</form>
+			</div>
+        </div>
+    </div>
+    
+<script>
+if($("#msg").val() != "") {
+	alert($("#msg").val());
+}
+
+function checkForm() {
+	if($("#pwd").val() == "") {
+		alert("비밀번호를 입력하세요.");
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+</script>
+</body>
+</html>

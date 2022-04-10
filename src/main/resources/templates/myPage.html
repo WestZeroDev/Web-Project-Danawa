@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragments/head :: head"></th:block>
+    <link rel="stylesheet" th:href="@{/css/myPage.css}">
+</head>
+<body>
+	<div id="wrap">
+    	<th:block th:replace="fragments/header :: header"></th:block>
+    	
+    	<div id="container" class="myPage_wrap">
+            <div class="side_area">
+                <div class="user_area">
+                    <div class="my_thumb">
+                        <span class="p_img"><img src="/icon/user_icon.gif"/></span>
+                    </div>
+                    <div class="my_info">
+                        <p class="p_nick" th:text="${session.nickname} + '님'"></p>
+                        <p class="p_id" th:text="'(' + ${session.idKey} + ')'"></p>
+                    </div>
+                    <div class="my_btn">
+                        <a href="/members/checkMemberPwd" class="btn_profile">회원정보수정</a>
+                    </div>
+                </div>
+                <div class="menu_area">
+                    <dl class="menu_lst">
+                        <dt><a id="link2" href="/members/myPage/myWish">관심상품</a></dt>
+                        <dt><span class="tit">활동내역</span></dt>
+                        <dd>
+                            <ul>
+                                <li><a id="link3" href="/members/myPage/myAct">내가 쓴 글</a></li>
+                            </ul>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="cont_area">
+                <div class="main_area">
+                    <div class="box my_wish">
+                        <div class="head">
+                            <h2>관심상품</h2>
+                            <span><a href="/members/myPage/myWish" class="btn_more">더보기</a></span>
+                        </div>
+                        <div class="cont" id="wishDiv">
+                            <ul class="wish_list" th:if="${wishList.totalElements != 0}">
+                                <li class="wish_item" th:each="prod: ${wishList}">
+                                    <a th:href="@{'/notebook/info/' + ${prod.pkey}}" target="_blank" class="wish_link">
+                                        <span class="thumb">
+                            				<img th:src="${prod.image}" th:alt="${prod.name}"/>
+                                        </span>
+                                        <span class="prod">[[${prod.name}]]</span>
+                                        <span class="price"><em class="num">[[${#numbers.formatInteger(prod.price, 0, 'COMMA')}]]</em>원</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul class="wish_list" th:if="${wishList.totalElements == 0}">
+                            	<li class="nothing" align="center">
+                                	<span style="font-size: 14px; color: #666;">관심상품이 없습니다.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="box my_act">
+                        <div class="head">
+                            <h2>활동내역</h2>
+                        </div>
+                        <div class="cont" id="actDiv">
+                            <div class="act_box_top">
+                                <span class="title">내가 쓴 글</span>
+                                <span><a href="/members/myPage/myAct" class="btn_more">더보기</a></span>
+                            </div>
+                            <ul class="act_list" th:if="${myPostList.totalElements != 0}">
+                                <li th:each="post: ${myPostList}">
+                                    <span class="my_article"><a th:href="@{'/board/free/view/' + ${post.fnum}}" target="_blank">[[${post.ftitle}]]</a></span>
+                                </li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                            <ul class="act_list" th:if="${myPostList.totalElements == 0}">
+                            	<li align="center" style="padding: 10px 0;">
+                                	<span style="font-size: 14px; color: #666;">작성한 글이 없습니다.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <th:block th:replace="fragments/footer :: footer"></th:block>
+    </div>
+    
+<script type="text/javascript">
+$(".btn_profile").click(() => {
+	return confirm("회원정보를 수정하시겠습니까?");
+});
+</script>
+</body>
+</html>

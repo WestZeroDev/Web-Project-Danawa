@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/modifyMemberInfoResult.css}">
+    <title>Document</title>
+</head>
+<body>
+    <div id="wrap">
+        <div id="container">
+            <header>
+                <a href="/" class="logo">
+                    <img src="http://guide.danawa.com/pcweb/download/danawa_RGB.png">
+                </a>
+                <h2 class="logo-txt">회원정보 수정 완료</h2>
+            </header>
+
+            <div class="check_top">
+				<h3 class="title">정보가 수정되었습니다.<br/>
+                    재로그인하시면 수정한 정보가 즉시 반영됩니다.</h3>
+			</div>
+
+            <div class="btn_wrap">
+				<a href="/" class="btn_submit cancel">메인으로</a>
+				<a href="/members/login" class="btn_submit accept">재로그인</a>
+			</div>
+        </div>
+    </div>
+</body>
+</html>

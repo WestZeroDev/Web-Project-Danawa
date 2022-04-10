@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+</head>
+<body>
+    <div id="wrap">
+        <div id="container">
+            <header>
+                <a href="/" class="logo">
+                    <img src="http://guide.danawa.com/pcweb/download/danawa_RGB.png" />
+                </a>
+            </header>
+            <form method="post" action="/members/login">
+            	<input type="hidden" id="msg" name="msg" th:value="${msg}">
+                <input type="email" id="email" name="email" placeholder="이메일" th:value="${session.modifyId}"/>
+                <input type="password" id="pwd" name="pwd" placeholder="비밀번호" />
+                <button class="btn_login" onclick="return checkForm()">로그인</button>
+            </form>
+            <div class="login_info">
+                <a href="#" id="searchId">아이디 찾기</a> |
+                <a href="#" id="searchPwd">비밀번호 찾기</a> |
+                <a href="/members/join" id="joinMember">회원가입</a>
+            </div>
+        </div>
+	</div>
+	
+<script>
+if($("#msg").val() != "") {
+	alert($("#msg").val());
+}
+
+function checkForm() {
+	if($("#email").val() == "") {
+		alert("이메일을 입력하세요.");
+		return false;
+	}
+	else if($("#pwd").val() == "") {
+		alert("비밀번호를 입력하세요.");
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+</script>
+</body>
+</html>

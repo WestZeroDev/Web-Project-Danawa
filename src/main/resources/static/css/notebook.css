@@ -1,0 +1,297 @@
+@charset "utf-8";
+
+body {
+    margin: 0;
+    display: block;
+    background-color: #fff;
+}
+
+div {
+    display: block;
+}
+
+div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, form, fieldset, p, strong, span {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul, li {
+    list-style: none;
+}
+
+#wrap {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #fff;
+    font-family: "Malgun Gothic","맑은 고딕","돋움",dotum,"굴림",gulim,Arial,sans-serif,"Apple SD Gothic Neo";
+    font-size: 13px;
+    letter-spacing: -0.2px;
+}
+
+#container {
+    width: 900px;
+    margin: 0 auto;
+    padding: 20px 0 60px;
+    background-color: #fff;
+}
+
+#container:after, #container:before {
+    display: block;
+    overflow: hidden;
+    clear: both;
+    content: "";
+}
+
+.prod_wrap {
+    position: relative;
+    margin: 0 auto;
+    width: 900px;
+    clear: both;
+}
+
+.prod_wrap .head {
+    margin: 5px 5px 8px;
+    clear: both;
+    position: relative;
+}
+
+.prod_wrap .head h3 {
+    display: inline-block;
+    font-size: 18px;
+    color: #0f0f0f;
+    letter-spacing: -0.8px;
+    margin: 0;
+    padding: 0;
+}
+
+#serach_option {
+    width: 900px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+    border: solid 1px #f0f0f0;
+}
+
+#serach_option tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+    height: 40px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+#serach_option th {
+    width: 15%;
+    background-color: aliceblue;
+    border-right: 1px solid #f0f0f0;
+}
+
+#serach_option td {
+    padding-left: 15px;
+    font-size: 12px;
+    color: #666;
+}
+
+#result_info {
+	display: inline-block;
+	width: 70px;
+	color: #33383e;
+    font-size: 15px;
+	font-weight: bold;
+    letter-spacing: -0.2px;
+    margin: 25px 0 0 5px;
+}
+
+#sort_option {
+    display: inline-block;
+    margin: 25px 0 0 5px;
+}
+
+#sort_option li {
+    display: inline-block;
+    list-style: none;
+}
+
+#sort_option a {
+    color: #919191;
+    padding: 0 3px;
+    font-size: 13px;
+    letter-spacing: -0.2px;
+}
+
+#sort_option a:hover {
+	text-decoration: underline;
+}
+
+#sort_option .selected a {
+	color: #33383e;
+	font-weight: bold;
+}
+
+#price_option {
+    float: right;
+    height: 24px;
+    margin: 20px 5px 5px;
+    padding-left: 10px;
+    color: #666;
+}
+
+#price_option .price_input {
+    width: 79px;
+    height: 22px;
+    line-height: 16px;
+    border: 1px solid #bfbfbf;
+    padding: 0 4px;
+}
+
+#price_option .price_input::placeholder {
+    color: #666;
+    font-size: 12px;
+    letter-spacing: -0.2px;
+}
+
+#price_option .btn_search {
+    width: 44px;
+    height: 24px;
+    border: 0;
+    background: #707070;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#inner_search {
+    float: right;
+    margin: 20px 5px 5px;
+	vertical-align: middle;
+    overflow: hidden;
+    font-size: 12px;
+    color: #333;
+    width: 181px;
+}
+
+#inner_search .search_input {
+    border: 1px solid #757575;
+    background: #fff;
+    border-radius: 0;
+    float: left;
+    height: 23px;
+    line-height: 23px;
+    padding: 0 0 0 8px;
+    margin: 0;
+    color: #333;
+    font-size: 12px;
+    width: 146px;
+}
+
+#inner_search .submit_search_list {
+    float: left;
+    width: 25px;
+    height: 25px;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: url(//img.danawa.com/img/prod/list/icon_list_pack_v210714.png) 5px -55px #757575;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 0;
+}
+
+#prod_list {
+    display: block;
+    clear: both;
+    width: 900px;
+    margin: 20px 0;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-top: 1px solid #f0f0f0;
+}
+
+#prod_list .image img {
+    width: 130px;
+    height: 130px;
+}
+
+#prod_list .info h3 {
+    font-size: 15px;
+	color: #000000;
+	padding-bottom: 5px;
+}
+
+#prod_list .info p {
+	font-size: 12px;
+	line-height: 20px;
+	color: #666;
+}
+
+#prod_list .info .regDate {
+	font-size: 13px;
+	padding-top: 10px;
+}
+
+#prod_list .price p {
+	font-size: 13px;
+    color: #2964e0;
+    letter-spacing: -0.022em;
+}
+
+#prod_list .price p strong {
+	font-size: 15px;
+    color: #2964e0;
+    letter-spacing: -0.022em;
+}
+
+#prod_list .wish a {
+	font-size: 12px;
+	color: #666;
+	letter-spacing: -0.022em;
+}
+
+#prod_list .wish a:hover {
+	text-decoration: underline;
+}
+
+#prod_list tr { border-bottom: 1px solid #f0f0f0; }
+#prod_list td.image { width: 16%; text-align: center; }
+#prod_list td.info { width: 70%; text-align: left; padding: 20px 30px 20px 10px; }
+#prod_list td.price { width: 10%; text-align: center; }
+#prod_list td.wish { width: 4%; text-align: center; }
+
+.pagination li {
+    display: inline-block;
+    list-style: none;
+}
+
+.pagination a {
+	display: inline-block;
+    list-style: none;
+    color: #0f0f0f;
+    padding: 4px 8px;
+    display: inline-block;
+    text-decoration: none;
+    border: 1px solid #bfbfbf;
+    cursor: pointer;
+}
+
+.pagination .active a {
+	font-weight: bold;
+}
+
+.pagination a:hover {
+	background-color: #f4f9fc;
+}
+
+.nothing {
+    color: #333;
+	font-size: 15px;
+    font-weight: bold;
+    padding-top: 20px;
+    padding-bottom: 40px;
+	border-bottom: 1px solid #f0f0f0;
+}

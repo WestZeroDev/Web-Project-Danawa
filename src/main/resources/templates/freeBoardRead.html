@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragments/head :: head"></th:block>
+    <link rel="stylesheet" th:href="@{/css/freeBoardRead.css}">
+</head>
+<body>
+    <div id="wrap">
+        <th:block th:replace="fragments/header :: header"></th:block>
+
+        <div id="container" class="freeBoardPost_wrap" align="center">
+            <div class="head" align="left">
+                <h2><a href="/board/free">자유게시판</a></h2>
+            </div>
+            <div id="ajaxArea">
+	            <div class="post_wrap">
+	                <div class="post_head">
+	                    <div class="subject" align="left">[[${post.ftitle}]]</div>
+	                    <div class="info_wrap">
+	                        <div class="left" align="left">
+	                            <span class="nickname">[[${post.fnickname}]]&nbsp;&nbsp;</span>
+	                            <span class="date">[[${post.fdate}]]</span>
+	                        </div>
+	                        <div class="right" align="right">
+	                            <span class="count">조회 [[${post.fcount}]]&nbsp;&nbsp;</span>
+	                            <span class="like">추천 [[${post.flike}]]&nbsp;&nbsp;</span>
+	                            <span class="comment">댓글 [[${commentList.size}]]</span>
+	                        </div>
+	                    </div>
+	                </div>
+	
+	                <div class="post_content" align="left" th:utext="${post.fcontent}"></div>
+	
+	                <div class="post_reply">
+	                	<input type="hidden" id="likeValid" th:value="${likeValid}">
+	                    <button id="like" type="button" onclick="like()"><p style="padding-bottom:2px">[[${post.flike}]]</p>추천</button>
+	                </div>
+	            </div>
+	
+				<div id="comment_box">
+					<table class="tbl comment_tbl">
+						<thead class="th">
+							<tr>
+								<th scope="col" class="nickname">작성자</th>
+								<th scope="col" class="content">내용</th>
+								<th scope="col" class="date">작성일</th>
+								<th scope="col" class="delete">삭제</th>
+							</tr>
+						</thead>
+						<tbody>
+							<th:block th:if="${commentList != null}">
+								<tr th:each="comment: ${commentList}">
+									<td class="nickname">[[${comment.fcnickname}]]</td>
+									<td class="content">[[${comment.fccontent}]]</td>
+									<td class="date">[[${comment.fcdate}]]</td>
+									<td class="delete">
+									<a href="javascript:void(0);" th:if="${session.idKey == comment.fcemail}" id="comment_delete" class="delete" th:onclick="|javascript:deleteComment('${comment.fcnum}')|">[X]</a>
+									</td>
+								</tr>
+							</th:block>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="comment_write">
+				<form method="post" action="/board/free/comment" id="comment_form">
+            	<input type="hidden" id="fnum" name="fnum" th:value="${post.fnum}">
+            	<input type="hidden" id="idKey" name="idKey" th:value="${session.idKey}">
+                <textarea id="comment_input" name="comment" placeholder="댓글을 남겨주세요."></textarea>
+                <button type="button" id="comment_submit" onclick="registerComment()">등록</button>
+                </form>
+            </div>
+
+            <div class="list_wrap">
+                <a href="/board/free"><button type="button" id="boardList">목록</button></a>
+            </div>
+            
+            <div class="manage_wrap" th:if="${session.idKey == post.femail}">
+            	<a th:href="@{'/board/free/modify/' + ${post.fnum}}"><button id="post_modify" type="button">수정</button></a>
+                <a th:href="@{'/board/free/delete/' + ${post.fnum}}"><button id="post_delete" type="button">삭제</button></a>
+            </div>
+        </div>
+        
+        <th:block th:replace="fragments/footer :: footer"></th:block>
+    </div>
+
+<script type="text/javascript">
+$("#post_delete").click(() => {
+	return confirm("삭제하시겠습니까?");
+});
+
+function like() {
+	if($("#idKey").val() == "") {
+		alert("로그인이 필요한 서비스입니다.");
+		return;
+	}
+	else {
+		$.ajax({ 
+			url: "/board/free/like",
+			data: {'email':$("#idKey").val(), 'fnum':$("#fnum").val()},
+			type: "POST",
+		}).done(function (fragment) { 
+			$("#ajaxArea").replaceWith(fragment);
+			if($("#likeValid").val() == 'fail') {
+				alert("추천은 한 번만 가능합니다.");
+			}
+		});
+	}
+}
+
+function registerComment() {
+	if($("#comment_input").val() == "") {
+		alert("댓글을 입력하세요.");
+	}
+	else if($("#comment_input").val().length > 500) {
+		alert("댓글은 최대 500자까지 입력 가능합니다.");
+	}
+	else if($("#idKey").val() == "") {
+		if(confirm("로그인이 필요한 서비스입니다. 로그인하시겠습니까?")) {
+			$("#comment_form").submit();
+			return true;
+		}
+		else return false;
+	}
+	else {
+		var freecommentForm = {
+			fnum:$("#fnum").val(),
+			comment:$("#comment_input").val()
+		}
+   
+		$.ajax({ 
+			url: "/board/free/comment",
+			data: freecommentForm,
+			type: "POST",
+		}).done(function (fragment) { 
+			$("#ajaxArea").replaceWith(fragment);
+			$("#comment_input").val('');
+		});
+	}
+}
+
+function deleteComment(fcnum) {
+	if(confirm("댓글을 삭제하시겠습니까?")) {
+		$.ajax({ 
+			url: "/board/free/comment/delete",
+			data: {'fcnum':fcnum, 'fnum':$("#fnum").val()},
+			type: "POST",
+		}).done(function (fragment) { 
+			$("#ajaxArea").replaceWith(fragment);
+		});
+	}
+}
+</script>
+</body>
+</html>

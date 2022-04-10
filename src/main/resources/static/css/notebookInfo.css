@@ -1,0 +1,170 @@
+@charset "utf-8";
+
+body {
+    margin: 0;
+    display: block;
+    background-color: #fff;
+}
+
+div {
+    display: block;
+}
+
+div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, form, fieldset, p, strong, span {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul, li {
+    list-style: none;
+}
+
+#wrap {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #fff;
+    font-family: "Malgun Gothic","맑은 고딕","돋움",dotum,"굴림",gulim,Arial,sans-serif,"Apple SD Gothic Neo";
+    font-size: 13px;
+    letter-spacing: -0.2px;
+}
+
+#container {
+    width: 900px;
+    margin: 0 auto;
+    padding: 20px 0 60px;
+    background-color: #fff;
+}
+
+#container:after, #container:before {
+    display: block;
+    overflow: hidden;
+    clear: both;
+    content: "";
+}
+
+.head {
+    width: 900px;
+    float: left;
+    border-bottom: 2px solid #333333;
+}
+
+.head h3 {
+    max-width: 800px;
+    margin: 15px 0 15px 0;
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: -0.8px;
+    word-break: break-all;
+}
+
+.head #prod_spec {
+	display: inline-block;
+    width: 800px;
+    font-size: 12px;
+    color: #919191;
+    line-height: 20px;
+    word-break: break-all;
+    word-wrap: break-word;
+    text-decoration: none;
+    margin-bottom: 15px;
+}
+
+.head #prod_wish {
+	display: inline-block;
+	width: 90px;
+	text-align: right;
+	padding-right: 5px;
+	font-size: 13px;
+	color: #666;
+	letter-spacing: -0.022em;
+}
+
+.head #prod_wish:hover {
+	text-decoration: underline;
+}
+
+
+.prod_info {
+    float: left;
+    width: 330px;
+    margin-top: 15px;
+    margin-left: 10px;
+}
+
+.prod_info .made_info {
+    text-align: center;
+    padding-top: 5px;
+}
+
+.prod_info .made_info span {
+    font-size: 12px;
+    color: #919191;
+    padding: 0 10px;
+}
+
+.price_info {
+    float: left;
+    width: 500px;
+    margin-left: 50px;
+    margin-top: 25px;
+}
+
+.lowest {
+	width: 500px;
+	text-align: center;
+	padding-bottom: 10px;
+}
+
+#lowest_tit {
+    color: #333;
+    font-weight: bold;
+    font-size: 17px;
+    line-height: 33px;
+}
+
+#lowest_price {
+    color: #2964e0;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 33px;
+    padding-left: 10px;
+}
+
+#lowest_price strong {
+	font-size: 25px;
+}
+
+.price_list {
+    display: table;
+    width: 500px;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.price_list tr {
+    height: 20px;
+    text-align: center;
+}
+
+td.logo { width: 30%; }
+td.price { width: 40%; font-size: 14px; font-family: "Tahoma"; }
+td.shipping { width: 30%; font-size: 13px; color: #919191; }
+
+td.logo img { width: 54px; padding: 3px 0 0 40px; }
+td.logo span { 
+	width: 100%;
+	max-width: 90px;
+    height: 22px;
+    line-height: 22px;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+    text-overflow : ellipsis;
+    font-weight: bold;
+    padding-left: 40px;
+}

@@ -1,0 +1,388 @@
+@charset "utf-8";
+
+body {
+    margin: 0;
+    display: block;
+    background-color: #fff;
+}
+
+div {
+    display: block;
+}
+
+div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, form, fieldset, p, button, strong, span {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+ul, li {
+    list-style: none;
+}
+
+#wrap {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #fff;
+    font-family: "Malgun Gothic","맑은 고딕","돋움",dotum,"굴림",gulim,Arial,sans-serif,"Apple SD Gothic Neo";
+    font-size: 13px;
+    letter-spacing: -0.2px;
+}
+
+#container {
+    width: 1100px;
+    margin: 0 auto;
+    padding: 20px 0 60px;
+    background-color: #fff;
+}
+
+#container:after, #container:before {
+    display: block;
+    overflow: hidden;
+    clear: both;
+    content: "";
+}
+
+.mypage_wrap {
+    position: relative;
+    margin: 20px auto;
+    padding: 20px 0 60px;
+    width: 1100px;
+    clear: both;
+}
+
+.side_area {
+    float: left;
+    width: 226px;
+    height: 600px;
+    border: 1px solid #e0e0e0;
+    margin: 0 32px 0 0;
+}
+
+.user_area {
+    padding: 16px 20px;
+}
+
+.my_thumb {
+    position: relative;
+    margin: 0 auto;
+    width: 80px;
+    height: 80px;
+}
+
+.my_thumb .p_img {
+    display: block;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.my_thumb .p_img img {
+    width: 100%;
+    height: 100%;
+}
+
+img {
+    vertical-align: top;
+    border: 0 none;
+}
+
+.my_info {
+    margin: 11px auto 7px;
+    text-align: center;
+    padding: 0;
+}
+
+.my_info .p_nick {
+    font-size: 13px;
+    color: #0f0f0f;
+    margin: 0;
+    padding: 0;
+}
+
+.my_info .p_id {
+    font-size: 13px;
+    color: #666;
+    line-height: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+.my_btn {
+    margin-top: 14px;
+    text-align: center;
+}
+
+.my_btn a {
+    text-decoration: none;
+}
+
+.btn_profile {
+    display: inline-block;
+    padding: 1px 9px 1px;
+    border: 1px solid #bfbfbf;
+    font-size: 12px;
+    color: #666;
+    letter-spacing: -0.1em;
+}
+
+dl {
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+}
+
+.side_area ul {
+    padding-inline-start: 40px;
+}
+
+.menu_lst {
+    margin: 0;
+    padding: 0;
+}
+
+.menu_lst dt span {
+    display: block;
+    margin-top: 14px;
+    padding: 18px 0 0 20px;
+    border-top: 1px solid #e0e0e0;
+    font-size: 17px;
+    color: #0f0f0f;
+    font-weight: bold;
+    letter-spacing: -0.6px;
+}
+
+.menu_lst a {
+    display: block;
+}
+
+dd {
+    display: block;
+    margin-inline-start: -40px;
+}
+
+.menu_lst dd a {
+    padding: 10px 0 0 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.menu_lst dd ul {
+    margin: 6px 0 18px;
+}
+
+.menu_lst dt a {
+    padding: 14px 0 0 20px;
+    border-top: 1px solid #e0e0e0;
+    font-size: 17px;
+    color: #0f0f0f;
+    font-weight: bold;
+}
+
+.menu_lst #link3 {
+    color: #2964e0;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.cont_area {
+    width: 840px;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+.box {
+    padding-bottom: 10px;
+}
+
+.box .head {
+    margin: 16px 0 12px;
+    clear: both;
+    position: relative;
+}
+
+.box .head h2 {
+    display: inline-block;
+    font-size: 20px;
+    line-height: 22px;
+    color: #0f0f0f;
+    letter-spacing: -0.8px;
+    margin: 0;
+    padding: 0;
+}
+
+.post_count {
+    display: inline-block;
+    font-size: 15px;
+    font-weight: bold;
+    color: #0f0f0f;
+	padding-left: 6px;
+}
+
+.cont {
+    position: relative;
+    clear: both;
+}
+
+.cont:after, .cont:before {
+    display: block;
+    overflow: hidden;
+    clear: both;
+    content: "";
+}
+
+#MyActList {
+    border-top: 1px solid #666;
+}
+
+.ctrl_box {
+    width: 820px;
+    height: 30px;
+    padding: 5px 10px;
+    border-top: 1px solid #e0e0e0;
+    background: #fafafa;
+}
+
+.clear {
+    clear: both;
+}
+
+.clear:after, .clear:before {
+    display: block;
+    overflow: hidden;
+    clear: both;
+    content: "";
+}
+
+.ctrl_box .chk {
+	margin-top: 5px;
+	padding-left: 20px;
+}
+
+input[type="checkbox"] + label {
+    color: #666;
+}
+
+.ctrl_box .chk, .ctrl_box {
+    float: left;
+}
+
+#deleteBtn {
+    float: right;
+    height: 21px;
+    padding: 0px 8px;
+    text-align: center;
+    line-height: 21px;
+    font-size: 13px;
+    color: #666;
+    border: 1px solid #bfbfbf;
+    border-radius: 2px;
+    background: #fff;
+    letter-spacing: -0.1em;
+    margin-right: 15px;
+    margin-top: 3px;
+}
+
+.tbl {
+    clear: both;
+    width: 840px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+    border-width: 1px 0;
+    border-color: #bfbfbf;
+    border-style: solid;
+}
+
+th.check { width: 10%; }
+th.title { width: 75%; }
+th.date { width: 15%; }
+
+.tbl thead {
+    height: 40px;
+    font-size: 14px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tbl tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+.tbl tr {
+    display: table-row;
+    vertical-align: inherit;
+    border-color: inherit;
+    height: 40px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+td.check, td.date { text-align: center; }
+td.title { width: 100%; padding: 5 20px; }
+
+td.title #subject {
+	display: inline-block;
+	max-width: 90%;
+	font-size: 14px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+td.title #comment {
+	display: inline-block;
+	min-width: 10%;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: top;
+}
+
+.pagination li {
+    display: inline-block;
+    list-style: none;
+}
+
+.pagination a {
+	display: inline-block;
+    list-style: none;
+    color: #0f0f0f;
+    padding: 4px 8px;
+    display: inline-block;
+    text-decoration: none;
+    border: 1px solid #bfbfbf;
+    cursor: pointer;
+}
+
+.pagination .active a {
+	font-weight: bold;
+}
+
+.pagination a:hover {
+	background-color: #f4f9fc;
+}
+
+.nothing {
+	font-size: 15px;
+    font-weight: bold;
+    color: #333;
+	padding: 40px 0;
+	border-bottom: 1px solid #f0f0f0;
+}

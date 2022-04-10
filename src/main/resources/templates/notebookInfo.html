@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragments/head :: head"></th:block>
+    <link rel="stylesheet" th:href="@{/css/notebookInfo.css}">
+</head>
+<body>
+ <div id="wrap">
+        <th:block th:replace="fragments/header :: header"></th:block>
+
+        <div id="container" class="prodInfo_wrap">
+            <div class="head" align="left">
+                <h3>[[${prod.name}]]</h3>
+                <span id="prod_spec">[[${prod.spec}]]</span>
+                <span id="prod_wish"><a href="javascript:void(0)" th:onclick="|javascript:wish('${prod.pkey}')|">관심등록</a></span>
+            </div>
+        
+            <div class="prod_info">
+                <img th:src="${prod.image}" th:alt="${prod.name}"/>
+                <div class="made_info">
+                    <span>등록월: [[${prod.regdate}]]</span>
+                    <span>제조사: [[${prod.brand}]]</span>
+                </div>
+            </div>
+            
+            <div class="price_info">
+                <div class="lowest">
+                    <span id="lowest_tit">최저가</span>
+                    <span id="lowest_price"><strong>[[${#numbers.formatInteger(prod.price, 0, 'COMMA')}]]</strong>원</span>
+                </div>
+
+                <table class="price_list">
+                    <tr th:each="price: ${priceList}">
+                        <td class="logo"><a th:href="${price.link}" target="_blank">
+                        <span th:if="${price.sitelogo == 'X'}">[[${price.sitename}]]</span>
+                        <img th:if="${price.sitelogo != 'X'}" th:src="${price.sitelogo}"/>
+                        </a></td>
+                        <td class="price"><a th:href="${price.link}" target="_blank">[[${#numbers.formatInteger(price.price, 0, 'COMMA')}]]원</a></td>
+                        <td class="shipping">[[${price.shipping}]]</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <th:block th:replace="fragments/footer :: footer"></th:block>
+    </div>
+    
+<script>
+function wish(pkeyInput) {
+	if($("#idKey").val() == "") {
+		alert("로그인 후 이용 가능합니다.");
+		return false;
+	}
+	
+	$.ajax({
+		type: 'POST',
+		url: '/members/wish/register',
+        data: {"pkey": pkeyInput},
+        success: function(msg) {
+            alert(msg);
+        }
+	});
+}
+</script>
+</body>

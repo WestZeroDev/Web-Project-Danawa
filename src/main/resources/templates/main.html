@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragments/head :: head"></th:block>
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+	<div id="wrap">
+        <th:block th:replace="fragments/header :: header"></th:block>
+        
+        <div id="container" class="main_wrap" align="center">
+			<div class="newProd">
+				<div class="head">
+					<h2>신상품</h2>
+					<span><a href="/notebook" class="btn_more">더보기</a></span>
+				</div>
+				<div class="cont" id="newDiv">
+					<ul class="prod_list" th:if="${prodList.totalElements != 0}">
+						<li class="prod_item" th:each="prod: ${prodList}">
+							<a th:href="@{'/notebook/info/' + ${prod.pkey}}" class="prod_link">
+								<span class="thumb">
+									<img th:src="${prod.image}" th:alt="${prod.name}"/>
+								</span>
+	                            <span class="prod">[[${prod.name}]]</span>
+	                            <span class="price"><em class="num">[[${#numbers.formatInteger(prod.price, 0, 'COMMA')}]]</em>원</span>
+	                        </a>
+						</li>
+					</ul>
+				</div>
+			</div>
+            
+            <div class="ad">
+	            <ul>
+		            <li>
+			            <a href="https://white.contentsfeed.com/RealMedia/ads/click_lx.ads/www.danawa.com/cate_NB/L22/539475120/x60/danawa/msi_nb_700142_e/msi_nb_700142_1.html/72385a7449474a506e2b51414165454a" target="_blank">
+		        		<img src="https://orange.contentsfeed.com/RealMedia/ads/Creatives/danawa/msi_nb_700142_e/msi_nb_700142_MSI_220404.jpg" border="0">
+		        		</a>
+	        		</li>
+		            <li>
+			            <a href="https://white.contentsfeed.com/RealMedia/ads/click_lx.ads/www.danawa.com/cate_NB/L22/1833855693/x07/danawa/waycos_Razer_NB_700142_1903/waycos_Razer_NB_700142_3.html/72385a7449474a5071564d41426f5259" target="_blank">
+			            <img src="https://orange.contentsfeed.com/RealMedia/ads/Creatives/danawa/waycos_Razer_NB_700142_1903/waycos_Razer_NB_700142_220218_B.jpg" border="0">
+			            </a>
+		            </li>
+		            <li>
+			            <a href="https://white.contentsfeed.com/RealMedia/ads/click_lx.ads/www.danawa.com/cate_NB/L22/820776082/x03/danawa/asus_nb_e_700142_1805/asus_nb_e_700142_asus_1.html/72385a7449474a507172494143494862" target="_blank">
+			            <img src="https://orange.contentsfeed.com/RealMedia/ads/Creatives/danawa/asus_nb_e_700142_1805/asus_nb_700142_220314.gif" border="0">
+			            </a>
+		            </li>
+		            <li>
+		            	<a href="https://white.contentsfeed.com/RealMedia/ads/click_lx.ads/www.danawa.com/cate_NB/L22/1686391322/x12/danawa/msi_nb_700142_e/msi_nb_700142_3.html/72385a7449474a5071776741436c7a43" target="_blank">
+		            	<img src="https://orange.contentsfeed.com/RealMedia/ads/Creatives/danawa/msi_nb_700142_e/msi_nb_700142_msikorea_220404.jpg" border="0">
+		            	</a>
+		            </li>
+		            <li>
+		            	<a href="https://white.contentsfeed.com/RealMedia/ads/click_lx.ads/www.danawa.com/cate_NB/L22/839606843/x59/danawa/msi_nb_700142_e/msi_nb_700142_2.html/72385a7449474a507179344141516443" target="_blank">
+		            	<img src="https://orange.contentsfeed.com/RealMedia/ads/Creatives/danawa/msi_nb_700142_e/msi_nb_700142_220302.jpg" border="0">
+		            	</a>
+		            </li>
+	            </ul>
+	        </div>
+        </div>
+        
+        <th:block th:replace="fragments/footer :: footer"></th:block>
+    </div>
+</body>
+</html>

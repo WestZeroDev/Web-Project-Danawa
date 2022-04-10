@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragments/head :: head"></th:block>
+    <link rel="stylesheet" th:href="@{/css/freeBoardList.css}">
+</head>
+<body>
+    <div id="wrap">
+    	<th:block th:replace="fragments/header :: header"></th:block>
+    
+        <div id="container" class="freeBoardList_wrap">
+            <div class="head" align="left">
+                <h2><a href="/board/free">자유게시판</a></h2>
+            </div>
+            
+            <div id="sort_option">
+               	<ul>
+                    <li class="sort_item" th:classappend="${sortMethod} == 'latest' ? 'selected'"><a href="/board/free?sort=latest" id="latest">최신순</a></li>
+                    <li class="sort_item" th:classappend="${sortMethod} == 'view' ? 'selected'"><a href="/board/free?sort=view" id="view">조회순</a></li>
+                    <li class="sort_item" th:classappend="${sortMethod} == 'like' ? 'selected'"><a href="/board/free?sort=like" id="like">추천순</a></li>
+                </ul>
+            </div>
+
+            <div id="boardList">
+                <table class="tbl freeBoard_tbl">
+                    <thead class="th">
+                        <tr>
+                            <th scope="col" class="title">제목</th>
+                            <th scope="col" class="author">작성자</th>
+                            <th scope="col" class="date">작성일</th>
+                            <th scope="col" class="view">조회수</th>
+                            <th scope="col" class="like">추천수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="post: ${boardList}">
+                            <td class="title"><a th:href="@{'/board/free/view/' + ${post.fnum}}"><span id="subject">[[${post.ftitle}]]</span></a><span id="comment" th:if="${post.fcomment != 0}">[[${post.fcomment}]]</span></td>
+                            <td class="author" th:text="${post.fnickname}"></td>
+                            <td class="date" th:text="${post.fdate}"></td>
+                            <td class="view" th:text="${post.fcount}"></td>
+                            <td class="like" th:text="${post.flike}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="nothing" th:if="${boardList.totalElements == 0}"><p>게시물이 없습니다.</p></div>
+
+				<nav th:if="${boardList.totalElements != 0}" style="text-align: center;">
+					<ul class="pagination" th:with="start=${T(java.lang.Math).floor(boardList.number / 10) * 10 + 1}, last=(${start + 9 < boardList.totalPages ? start + 9 : boardList.totalPages})">
+				        <li>
+				            <a th:href="@{/board/free(page=1)}" aria-label="First">
+				                <span aria-hidden="true">First</span>
+				            </a>
+				        </li>
+				
+				        <li th:class="${boardList.first} ? 'disabled'">
+				            <a th:href="${boardList.first} ? 'javascript:void(0)' :@{/board/free(page=${boardList.number})}" aria-label="Previous">
+				                <span aria-hidden="true">&lt;</span>
+				            </a>
+				        </li>
+				
+				        <li th:each="page: ${#numbers.sequence(start, last)}" th:class="${page == boardList.number + 1} ? 'active'">
+				            <a th:text="${page}" th:href="@{/board/free(page=${page})}"></a>
+				        </li>
+				
+				        <li th:class="${boardList.last} ? 'disabled'">
+				            <a th:href="${boardList.last} ? 'javascript:void(0)' : @{/board/free(page=${boardList.number + 2})}" aria-label="Next">
+				                <span aria-hidden="true">&gt;</span>
+				            </a>
+				        </li>
+				
+				        <li>
+				            <a th:href="@{/board/free(page=${boardList.totalPages})}" aria-label="Last">
+				                <span aria-hidden="true">Last</span>
+				            </a>
+				        </li>
+				    </ul>
+				</nav>
+
+				<div class="board_write" align="right">
+					<input type="hidden" id="idKey" name="idKey" th:value="${session.idKey}">
+                    <a href="/board/free/post"><button id="write_btn">글쓰기</button></a>
+                </div>
+    
+                <div class="board_search" align="center">
+                    <form id="searchForm" method="get" action="/board/free/search">
+                        <select name="keyfield" size="1">
+                            <option value="title">제목</option>
+                            <option value="content">내용</option>
+                            <option value="nickname">작성자</option>
+                        </select>
+                        <input type="text" size="16" name="keyword" id="searchKeyword"/>
+                        <input type="button" value="검색" onclick="return check()"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <th:block th:replace="fragments/footer :: footer"></th:block>
+    </div>
+    
+<script type="text/javascript">
+var idKey = $("#idKey").val();
+$("#write_btn").click(() => {
+	if(idKey == "") {
+		return confirm("로그인이 필요한 서비스입니다. 로그인하시겠습니까?");
+	}
+	else return true;	
+});
+
+function check() {
+	if($("#searchKeyword").val() == "") {
+		alert("검색어를 입력하세요.");
+		return false;
+	}
+	else {
+		$("#searchForm").submit();
+		return true;
+	}
+}
+</script>
+</body>
+</html>
