@@ -1,14 +1,12 @@
 package me.danawa.service;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import me.danawa.beans.PriceInfo;
-import me.danawa.dao.PriceRepository;
+import me.danawa.domain.PriceInfo;
+import me.danawa.repository.PriceRepository;
 
 @Service
 @Transactional
@@ -18,9 +16,5 @@ public class PriceService {
 
 	public PriceInfo save(PriceInfo price) {
 		return priceRepository.save(price);
-	}
-	
-	public List<PriceInfo> getPriceList(String name) {
-		return priceRepository.findAllByName(name);
 	}
 }

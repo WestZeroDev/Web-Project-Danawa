@@ -1,8 +1,8 @@
-package me.danawa.dao;
+package me.danawa.repository;
 
 import java.util.List;
 
-import me.danawa.beans.Product;
+import me.danawa.domain.Product;
 
 public interface ProductRepositoryCustom {
 	public List<Product> brandOption(List<String> brandList);

@@ -21,21 +21,21 @@
 
 			<div class="subhead" align="center">글 수정</div>
 
-			<form th:action="@{'/board/free/modify/' + ${post.fnum}}" method="post" onsubmit="return checkForm()">
+			<form th:action="@{'/board/free/modify/' + ${post.id}}" method="post" onsubmit="return checkForm()">
 				<div class="title_area">
 					<label for="title" style="padding:12px;">제목</label>
-					<input type="text" name="title" id="title" placeholder="제목을 입력하세요." th:value="${post.ftitle}" style="border-radius:5px; width:93%;">
+					<input type="text" name="title" id="title" placeholder="제목을 입력하세요." th:value="${post.title}" style="border-radius:5px; width:93%;">
 				</div>
 
 				<div class="content_area" style="text-align:left">
-					<input type="hidden" id="original" th:value="${post.fcontent}">
+					<input type="hidden" id="original" th:value="${post.content}">
 					<textarea id="summernote" name="content"></textarea>
 					<input type="hidden" id="fileList" name="fileList">
 				</div>
 				
 				<div class="button_wrap" align="center">
 					<button type="submit" id="submit">수정</button>
-					<a th:href="@{'/board/free/view/' + ${post.fnum}}"><button type="button" id="cancel">취소</button></a>
+					<a th:href="@{'/board/free/view/' + ${post.id}}"><button type="button" id="cancel">취소</button></a>
 				</div>
 			</form>
 		</div>

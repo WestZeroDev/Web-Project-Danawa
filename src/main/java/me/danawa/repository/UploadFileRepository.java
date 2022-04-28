@@ -1,8 +1,8 @@
-package me.danawa.dao;
+package me.danawa.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import me.danawa.beans.UploadFile;
+import me.danawa.domain.UploadFile;
 
 public interface UploadFileRepository extends JpaRepository<UploadFile, Long> {
 

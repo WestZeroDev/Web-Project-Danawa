@@ -71,13 +71,13 @@
 									<tr th:each="post: ${boardList}">
 										<td class="check">
 											<div class="chk">
-												<input type="checkbox" th:value="${post.fnum}" onclick="checkClick()">
+												<input type="checkbox" th:value="${post.id}" onclick="checkClick()">
 											</div>
 										</td>
 										<td class="title">
-											<a th:href="@{'/board/free/view/' + ${post.fnum}}" target="_blank"><span id="subject">[[${post.ftitle}]]</span></a><span id="comment" th:if="${post.fcomment != 0}">[[${post.fcomment}]]</span>
+											<a th:href="@{'/board/free/view/' + ${post.id}}" target="_blank"><span id="subject">[[${post.title}]]</span></a><span id="comment" th:if="${post.comment != 0}">[[${post.comment}]]</span>
 										</td>
-										<td class="date" th:text="${post.fdate}"></td>
+										<td class="date" th:text="${post.regDate}"></td>
 									</tr>
 								</tbody>
 							</table>
@@ -149,13 +149,13 @@ function checkClick() {
 }
 
 function postDelete() {
-	var fnumArray = [];
+	var postIdArray = [];
 	   
 	$("#boardArea .chk input:checkbox:checked").each(function(){
-		fnumArray.push($(this).val());
+		postIdArray.push($(this).val());
 	});
 	   
-	if(fnumArray == ""){
+	if(postIdArray == ""){
 		alert("삭제할 게시물을 선택해주세요.");
 		return false;
 	}
@@ -164,7 +164,7 @@ function postDelete() {
 			$.ajax({
 				type: 'POST',
 				url: '/members/myPage/myAct/delete',
-				data: JSON.stringify(fnumArray),
+				data: JSON.stringify(postIdArray),
 				contentType: 'application/json',
 			}).done(function (fragment) { 
 				$("#ajaxPostArea").replaceWith(fragment);

@@ -1,11 +1,11 @@
-package me.danawa.dao;
+package me.danawa.repository;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import me.danawa.beans.Product;
+import me.danawa.domain.Product;
 
 public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 	@PersistenceContext

@@ -5,8 +5,8 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import me.danawa.beans.Like;
-import me.danawa.dao.LikeRepository;
+import me.danawa.domain.Like;
+import me.danawa.repository.LikeRepository;
 
 @Service
 @Transactional
@@ -14,20 +14,13 @@ import me.danawa.dao.LikeRepository;
 public class LikeService {
 	private final LikeRepository likeRepository;
 	
-	public void save(Like like) {
-		likeRepository.save(like);
-	}
-	
-	public void delete(long fnum) {
-		likeRepository.deleteAllByFnum(fnum);
-	}
-	
-	public int likeCount(long fnum) {
-		return likeRepository.findByFnum(fnum).size();
-	}
-	
-	public boolean likeCheck(long fnum, String email) {
-		return likeRepository.findByFnumAndEmail(fnum, email).isPresent();
+	public boolean save(Like like) {
+		//이미 추천했는지 확인 후 저장
+		if(likeRepository.findByMemberAndPost(like.getMember(), like.getPost()).isEmpty()) {
+			likeRepository.save(like);
+			return true;
+		}
+		else return false;
 	}
 	
 }

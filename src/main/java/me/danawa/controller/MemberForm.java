@@ -1,4 +1,4 @@
-package me.danawa.beans;
+package me.danawa.controller;
 
 import lombok.Getter;
 import lombok.Setter;

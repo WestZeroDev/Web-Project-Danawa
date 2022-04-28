@@ -45,7 +45,7 @@
                         <div class="cont" id="wishDiv">
                             <ul class="wish_list" th:if="${wishList.totalElements != 0}">
                                 <li class="wish_item" th:each="prod: ${wishList}">
-                                    <a th:href="@{'/notebook/info/' + ${prod.pkey}}" target="_blank" class="wish_link">
+                                    <a th:href="@{'/notebook/info/' + ${prod.id}}" target="_blank" class="wish_link">
                                         <span class="thumb">
                             				<img th:src="${prod.image}" th:alt="${prod.name}"/>
                                         </span>
@@ -73,7 +73,7 @@
                             </div>
                             <ul class="act_list" th:if="${myPostList.totalElements != 0}">
                                 <li th:each="post: ${myPostList}">
-                                    <span class="my_article"><a th:href="@{'/board/free/view/' + ${post.fnum}}" target="_blank">[[${post.ftitle}]]</a></span>
+                                    <span class="my_article"><a th:href="@{'/board/free/view/' + ${post.id}}" target="_blank">[[${post.title}]]</a></span>
                                 </li>
                                 <li></li>
                                 <li></li>

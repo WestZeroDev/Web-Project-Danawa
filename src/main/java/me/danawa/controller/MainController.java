@@ -9,14 +9,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.RequiredArgsConstructor;
-import me.danawa.service.FreePostService;
+import me.danawa.service.PostService;
 import me.danawa.service.ProductService;
 
 @Controller
 @RequiredArgsConstructor
 public class MainController {
 	private final ProductService productService;
-	private final FreePostService freePostService;
+	private final PostService freePostService;
 	
 	//메인페이지
 	@GetMapping("/")

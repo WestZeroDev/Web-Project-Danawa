@@ -1,5 +1,8 @@
-package me.danawa.beans;
+package me.danawa.domain;
 
+import java.time.LocalDate;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,15 +16,27 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="REPLY_LIKE")
+@Table(name="UPLOAD_FILE")
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Like {
+public class UploadFile {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long lnum;
+	@Column(name = "file_id")
+	private Long id;
+	
 	@NotNull
-	private long fnum;
+	private String originalName;
+	
 	@NotNull
-	private String lemail;
+	private String savedName;
+	
+	@NotNull
+	private String path;
+	
+	@NotNull
+	private Long size;
+	
+	@NotNull @Column(name = "regdate")
+	private LocalDate regDate = LocalDate.now();
 }

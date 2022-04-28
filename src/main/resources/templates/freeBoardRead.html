@@ -15,25 +15,25 @@
             <div id="ajaxArea">
 	            <div class="post_wrap">
 	                <div class="post_head">
-	                    <div class="subject" align="left">[[${post.ftitle}]]</div>
+	                    <div class="subject" align="left">[[${post.title}]]</div>
 	                    <div class="info_wrap">
 	                        <div class="left" align="left">
-	                            <span class="nickname">[[${post.fnickname}]]&nbsp;&nbsp;</span>
-	                            <span class="date">[[${post.fdate}]]</span>
+	                            <span class="nickname">[[${post.nickname}]]&nbsp;&nbsp;</span>
+	                            <span class="date">[[${post.regDate}]]</span>
 	                        </div>
 	                        <div class="right" align="right">
-	                            <span class="count">조회 [[${post.fcount}]]&nbsp;&nbsp;</span>
-	                            <span class="like">추천 [[${post.flike}]]&nbsp;&nbsp;</span>
+	                            <span class="count">조회 [[${post.view}]]&nbsp;&nbsp;</span>
+	                            <span class="like">추천 [[${post.like}]]&nbsp;&nbsp;</span>
 	                            <span class="comment">댓글 [[${commentList.size}]]</span>
 	                        </div>
 	                    </div>
 	                </div>
 	
-	                <div class="post_content" align="left" th:utext="${post.fcontent}"></div>
+	                <div class="post_content" align="left" th:utext="${post.content}"></div>
 	
 	                <div class="post_reply">
+	                    <button id="like" type="button" onclick="like()"><p style="padding-bottom:2px">[[${post.like}]]</p>추천</button>
 	                	<input type="hidden" id="likeValid" th:value="${likeValid}">
-	                    <button id="like" type="button" onclick="like()"><p style="padding-bottom:2px">[[${post.flike}]]</p>추천</button>
 	                </div>
 	            </div>
 	
@@ -50,11 +50,11 @@
 						<tbody>
 							<th:block th:if="${commentList != null}">
 								<tr th:each="comment: ${commentList}">
-									<td class="nickname">[[${comment.fcnickname}]]</td>
-									<td class="content">[[${comment.fccontent}]]</td>
-									<td class="date">[[${comment.fcdate}]]</td>
+									<td class="nickname">[[${comment.nickname}]]</td>
+									<td class="content">[[${comment.content}]]</td>
+									<td class="date">[[${comment.regDate}]]</td>
 									<td class="delete">
-									<a href="javascript:void(0);" th:if="${session.idKey == comment.fcemail}" id="comment_delete" class="delete" th:onclick="|javascript:deleteComment('${comment.fcnum}')|">[X]</a>
+									<a href="javascript:void(0);" th:if="${session.idKey == comment.email}" id="comment_delete" class="delete" th:onclick="|javascript:deleteComment('${comment.id}')|">[X]</a>
 									</td>
 								</tr>
 							</th:block>
@@ -65,7 +65,7 @@
 
 			<div class="comment_write">
 				<form method="post" action="/board/free/comment" id="comment_form">
-            	<input type="hidden" id="fnum" name="fnum" th:value="${post.fnum}">
+            	<input type="hidden" id="postId" name="postId" th:value="${post.id}">
             	<input type="hidden" id="idKey" name="idKey" th:value="${session.idKey}">
                 <textarea id="comment_input" name="comment" placeholder="댓글을 남겨주세요."></textarea>
                 <button type="button" id="comment_submit" onclick="registerComment()">등록</button>
@@ -76,9 +76,9 @@
                 <a href="/board/free"><button type="button" id="boardList">목록</button></a>
             </div>
             
-            <div class="manage_wrap" th:if="${session.idKey == post.femail}">
-            	<a th:href="@{'/board/free/modify/' + ${post.fnum}}"><button id="post_modify" type="button">수정</button></a>
-                <a th:href="@{'/board/free/delete/' + ${post.fnum}}"><button id="post_delete" type="button">삭제</button></a>
+            <div class="manage_wrap" th:if="${session.idKey == post.email}">
+            	<a th:href="@{'/board/free/modify/' + ${post.id}}"><button id="post_modify" type="button">수정</button></a>
+                <a th:href="@{'/board/free/delete/' + ${post.id}}"><button id="post_delete" type="button">삭제</button></a>
             </div>
         </div>
         
@@ -98,7 +98,7 @@ function like() {
 	else {
 		$.ajax({ 
 			url: "/board/free/like",
-			data: {'email':$("#idKey").val(), 'fnum':$("#fnum").val()},
+			data: {'postId':$("#postId").val()},
 			type: "POST",
 		}).done(function (fragment) { 
 			$("#ajaxArea").replaceWith(fragment);
@@ -125,8 +125,8 @@ function registerComment() {
 	}
 	else {
 		var freecommentForm = {
-			fnum:$("#fnum").val(),
-			comment:$("#comment_input").val()
+			'postId':$("#postId").val(),
+			'comment':$("#comment_input").val()
 		}
    
 		$.ajax({ 
@@ -140,11 +140,11 @@ function registerComment() {
 	}
 }
 
-function deleteComment(fcnum) {
+function deleteComment(id) {
 	if(confirm("댓글을 삭제하시겠습니까?")) {
 		$.ajax({ 
 			url: "/board/free/comment/delete",
-			data: {'fcnum':fcnum, 'fnum':$("#fnum").val()},
+			data: {'commentId':id, 'postId':$("#postId").val()},
 			type: "POST",
 		}).done(function (fragment) { 
 			$("#ajaxArea").replaceWith(fragment);

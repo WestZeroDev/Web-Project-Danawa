@@ -126,20 +126,20 @@
                     </thead>
                     <tr th:each="prod: ${prodList}">
                         <td class="image">
-                            <a th:href="@{'/notebook/info/' + ${prod.pkey}}" target="_blank">
+                            <a th:href="@{'/notebook/info/' + ${prod.id}}" target="_blank">
                             	<img th:src="${prod.image}" th:alt="${prod.name}">
                             </a>
                         </td>
                         <td class="info">
-                            <h3><a th:href="@{'/notebook/info/' + ${prod.pkey}}" target="_blank">[[${prod.name}]]</a></h3>
+                            <h3><a th:href="@{'/notebook/info/' + ${prod.id}}" target="_blank">[[${prod.name}]]</a></h3>
                             <p>[[${prod.spec}]]</p>
-                            <p class="regDate">등록월 [[${prod.regdate}]]</p>
+                            <p class="regDate">등록월 [[${prod.regDate}]]</p>
                         </td>
                         <td class="price">
                             <p><strong>[[${#numbers.formatInteger(prod.price, 0, 'COMMA')}]]</strong>원</p>
                         </td>
                         <td class="wish">
-                            <a href="javascript:void(0)" th:onclick="|javascript:wish('${prod.pkey}')|">관심등록</a>
+                            <a href="javascript:void(0)" th:onclick="|javascript:wish('${prod.id}')|">관심등록</a>
                         </td>
                     </tr>
                 </table>
@@ -368,7 +368,7 @@ function pageSelect(pageNumber) {
 	});
 }
 
-function wish(pkeyInput) {
+function wish(prodIdInput) {
 	if($("#idKey").val() == "") {
 		alert("로그인 후 이용 가능합니다.");
 		return false;
@@ -377,7 +377,7 @@ function wish(pkeyInput) {
 	$.ajax({
 		type: 'POST',
 		url: '/members/wish/register',
-        data: {"pkey": pkeyInput},
+        data: {"prodId":prodIdInput},
         success: function(msg) {
             alert(msg);
         }

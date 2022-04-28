@@ -17,18 +17,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
-import me.danawa.beans.Member;
-import me.danawa.beans.MemberForm;
-import me.danawa.service.FreePostService;
+import me.danawa.domain.Member;
+import me.danawa.domain.Product;
+import me.danawa.domain.Wish;
+import me.danawa.service.CommentService;
 import me.danawa.service.MemberService;
+import me.danawa.service.PostService;
 import me.danawa.service.ProductService;
+import me.danawa.service.WishService;
 
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
 	private final MemberService memberService;
-	private final FreePostService freePostService;
+	private final PostService postService;
+	private final CommentService commentService;
 	private final ProductService productService;
+	private final WishService wishService;
 	
 	//회원가입
 	@GetMapping("/members/join")
@@ -55,7 +60,7 @@ public class MemberController {
 	@PostMapping("/members/pwd")
 	public String pwdCheck(MemberForm form, HttpSession session, Model model) {
 		String email = session.getAttribute("idKey").toString();
-		Member member = memberService.findById(email).get();
+		Member member = memberService.findByEmail(email).get();
 		Boolean isEqual = member.getPwd().equals(form.getPwd());
 		if(isEqual) {
 			model.addAttribute("pwdValid", "true");
@@ -70,7 +75,7 @@ public class MemberController {
 	@PostMapping("/members/join/id")
 	public String idCheck(MemberForm form, Model model) {
 		String email = form.getEmail();
-		if(memberService.findById(email).isPresent()) {
+		if(memberService.findByEmail(email).isPresent()) {
 			model.addAttribute("emailValid", "false");
 		}
 		else {
@@ -107,22 +112,17 @@ public class MemberController {
 	@PostMapping("/members/login")
 	public String doLogin(MemberForm form, HttpSession session, RedirectAttributes rttr) {
 		String url = session.getAttribute("url").toString();
-		if(memberService.findById(form.getEmail()).isPresent()) {
-			Member member = memberService.findById(form.getEmail()).get();
+		if(memberService.findByEmail(form.getEmail()).isPresent()) {
+			Member member = memberService.findByEmail(form.getEmail()).get();
 			Boolean isEqual = member.getPwd().equals(form.getPwd());
 			if(isEqual) {
 				session.setAttribute("idKey", member.getEmail());
 				session.setAttribute("nickname", member.getNickname());
-				//자유게시판 글 작성 시도한 경우
-				if(session.getAttribute("freepost") != null) {
-					session.removeAttribute("freepost");
-					return "freeBoardPost";
-				}
-				//자유게시판 댓글 작성 시도한 경우
-				if(session.getAttribute("fnum") != null) {
-					String fnum = session.getAttribute("fnum").toString();
-					session.removeAttribute("fnum");
-					return "redirect:/board/free/view/" + fnum;
+				//글 작성이나 댓글 작성 시도한 경우
+				if(session.getAttribute("from") != null) {
+					url = session.getAttribute("from").toString();
+					session.removeAttribute("from");
+					return url;
 				}
 				return "redirect:" + url;
 			}
@@ -150,7 +150,7 @@ public class MemberController {
 	@PostMapping("/members/checkMemberPwd")
 	public String doChkPwd(MemberForm form, HttpSession session, RedirectAttributes rttr) {
 		String idKey = session.getAttribute("idKey").toString();
-		Member member = memberService.findById(idKey).get();
+		Member member = memberService.findByEmail(idKey).get();
 		boolean isEqual = member.getPwd().equals(form.getPwd());
 		if(isEqual) {
 			return "redirect:/members/modifyMember";
@@ -173,20 +173,20 @@ public class MemberController {
 	@PostMapping("/members/modifyMember")
 	public String doModify(MemberForm form, HttpSession session) {
 		String idKey = session.getAttribute("idKey").toString();
-		Member member = memberService.findById(idKey).get();
+		Member member = memberService.findByEmail(idKey).get();
 		String nickname = form.getNickname();
 		//닉네임 변경
 		if(!member.getNickname().equals(nickname)) {
 			member.setNickname(nickname);
-			//닉네임 수정할 경우 게시물 닉네임도 업데이트
-			freePostService.updateNickname(idKey, nickname);
+			//닉네임 수정할 경우 게시물, 댓글 닉네임도 업데이트
+			postService.updateNickname(idKey, nickname);
+			commentService.updateNickname(idKey, nickname);
 		}
 		//비밀번호 변경
 		if(!form.getNewPwd().isEmpty()) {
 			String newPwd = form.getNewPwd();
 			member.setPwd(newPwd);
 		}
-		memberService.update(member);
 		session.setAttribute("modifyId", idKey);
 		session.removeAttribute("idKey");
 		return "redirect:/members/modifyResult";
@@ -208,9 +208,9 @@ public class MemberController {
 			return "redirect:/";
 		}
 		String idKey = session.getAttribute("idKey").toString();
-		Member member = memberService.findById(idKey).get();
-		model.addAttribute("wishList", productService.getWishList(member.getWishList(), pageable, "none"));
-		model.addAttribute("myPostList", freePostService.findByEmail(idKey, pageable));
+		Member member = memberService.findByEmail(idKey).get();
+		model.addAttribute("wishList", productService.getWishProdList(member.getWishList(), pageable, "none"));
+		model.addAttribute("myPostList", postService.findByEmail(idKey, pageable));
 		return "myPage";
 	}
 	
@@ -221,34 +221,37 @@ public class MemberController {
 			return "redirect:/";
 		}
 		String idKey = session.getAttribute("idKey").toString();
-		model.addAttribute("boardList", freePostService.findByEmail(idKey, pageable));
+		model.addAttribute("boardList", postService.findByEmail(idKey, pageable));
 		return "myAct";
 	}
 	
 	//내가쓴글 다중선택삭제
 	@PostMapping("/members/myPage/myAct/delete")
-	public String myActDelete(@RequestBody List<String> fnumArray, @PageableDefault Pageable pageable, Model model, HttpSession session) {
-		for(String fnum : fnumArray) {
-			freePostService.delete(Long.parseLong(fnum));
+	public String myActDelete(@RequestBody List<String> postIdArray, @PageableDefault Pageable pageable, Model model, HttpSession session) {
+		for(String postId : postIdArray) {
+			postService.deleteById(Long.parseLong(postId));
 		}
 		String idKey = session.getAttribute("idKey").toString();
-		model.addAttribute("boardList", freePostService.findByEmail(idKey, pageable));
+		model.addAttribute("boardList", postService.findByEmail(idKey, pageable));
 		return "myAct :: #ajaxPostArea";
 	}
 	
 	//관심상품 등록
 	@ResponseBody @PostMapping("/members/wish/register")
-	public String wishRegister(@RequestParam(value="pkey") long pkey, HttpSession session) {
+	public String wishRegister(Long prodId, HttpSession session) {
 		String email = session.getAttribute("idKey").toString();
-		Member member = memberService.findById(email).get();
-		List<Long> wishList = member.getWishList();
-		if(wishList.contains(pkey)) {
+		Member member = memberService.findByEmail(email).get();
+		Product prod = productService.findById(prodId).get();
+
+		if(member.getWishList().stream().anyMatch(e -> e.getProduct().equals(prod))) {
 			return "이미 등록된 상품입니다.";
 		}
+		
 		else {
-			wishList.add(pkey);
-			member.setWishList(wishList);
-			memberService.update(member);
+			Wish wish = new Wish();
+			wish.setMember(member);
+			wish.setProduct(prod);
+			wishService.save(wish);
 			return "관심상품으로 등록되었습니다.";
 		}
 	}
@@ -260,10 +263,10 @@ public class MemberController {
 			return "redirect:/";
 		}
 		String idKey = session.getAttribute("idKey").toString();
-		Member member = memberService.findById(idKey).get();
+		Member member = memberService.findByEmail(idKey).get();
 		String sort = "none";
 		model.addAttribute("sortMethod", sort);
-		model.addAttribute("wishList", productService.getWishList(member.getWishList(), pageable, sort));
+		model.addAttribute("wishList", productService.getWishProdList(member.getWishList(), pageable, sort));
 		return "myWish";
 	}
 	
@@ -272,24 +275,26 @@ public class MemberController {
 	public String myWishSort(@RequestParam(value="sort", required=false) String sort,
 			@PageableDefault Pageable pageable, Model model, HttpSession session) {
 		String idKey = session.getAttribute("idKey").toString();
-		Member member = memberService.findById(idKey).get();
+		Member member = memberService.findByEmail(idKey).get();
 		model.addAttribute("sortMethod", sort);
-		model.addAttribute("wishList", productService.getWishList(member.getWishList(), pageable, sort));
+		model.addAttribute("wishList", productService.getWishProdList(member.getWishList(), pageable, sort));
 		return "myWish :: #ajaxArea";
 	}
 	
 	//관심상품 다중선택삭제
 	@PostMapping("/members/myPage/myWish/delete")
-	public String myWishSort(@RequestParam(value="pkey[]") List<Long> pkey,
+	public String myWishSort(@RequestParam(value="prodIdList[]") List<Long> prodIdList,
 			@RequestParam(value="sort", required=false) String sort,
 			@PageableDefault Pageable pageable, Model model, HttpSession session) {
 		String idKey = session.getAttribute("idKey").toString();
-		Member member = memberService.findById(idKey).get();
-		List<Long> wishList = member.getWishList();
-		wishList.removeAll(pkey);
-		memberService.update(member);
+		Member member = memberService.findByEmail(idKey).get();
+		
+		for(Long prodId : prodIdList) {
+			wishService.delete(member, productService.findById(prodId).get());
+		}
+
 		model.addAttribute("sortMethod", sort);
-		model.addAttribute("wishList", productService.getWishList(member.getWishList(), pageable, sort));
+		model.addAttribute("wishList", productService.getWishProdList(member.getWishList(), pageable, sort));
 		return "myWish :: #ajaxArea";
 	}
 	
@@ -314,11 +319,12 @@ public class MemberController {
 	@PostMapping("/members/secede")
 	public String doSecede(MemberForm form, HttpSession session, RedirectAttributes rttr) {
 		String idKey = session.getAttribute("idKey").toString();
-		Member member = memberService.findById(idKey).get();
+		Member member = memberService.findByEmail(idKey).get();
 		boolean isEqual = member.getPwd().equals(form.getPwd());
 		if(isEqual) {
 			memberService.delete(member);
 			session.invalidate();
+			rttr.addFlashAttribute("msg", "탈퇴가 완료되었습니다.");
 			return "redirect:/";
 		}
 		else {

@@ -73,18 +73,18 @@
                                         <tr th:each="prod: ${wishList}">
 	                                        <td class="check">
 												<div class="chk" align="center">
-													<input type="checkbox" th:value="${prod.pkey}" onclick="checkClick()">
+													<input type="checkbox" th:value="${prod.id}" onclick="checkClick()">
 												</div>
 											</td>
 					                        <td class="image">
-					                            <a th:href="@{'/notebook/info/' + ${prod.pkey}}" target="_blank">
+					                            <a th:href="@{'/notebook/info/' + ${prod.id}}" target="_blank">
 					                            	<img th:src="${prod.image}" th:alt="${prod.name}">
 					                            </a>
 					                        </td>
 					                        <td class="info">
-					                            <h3><a th:href="@{'/notebook/info/' + ${prod.pkey}}" target="_blank">[[${prod.name}]]</a></h3>
+					                            <h3><a th:href="@{'/notebook/info/' + ${prod.id}}" target="_blank">[[${prod.name}]]</a></h3>
 					                            <p>[[${prod.spec}]]</p>
-					                            <p class="regDate">등록월 [[${prod.regdate}]]</p>
+					                            <p class="regDate">등록월 [[${prod.regDate}]]</p>
 					                        </td>
 					                        <td class="price">
 												<span class="price">
@@ -155,7 +155,7 @@ function checkAll() {
 	}
 }
 
-var sortMethod = "latest";
+var sortMethod = "none";
 function sortOption(sort) {
 	sortMethod = sort;
 	console.log(sortMethod);
@@ -189,13 +189,13 @@ function checkClick() {
 }
 
 function wishDelete() {
-	var pkeyArray = [];
+	var prodIdArray = [];
 	   
 	$("#wishProductListArea .chk input:checkbox:checked").each(function(){
-		pkeyArray.push($(this).val());
+		prodIdArray.push($(this).val());
 	});
 	   
-	if(pkeyArray == ""){
+	if(prodIdArray == ""){
 		alert("삭제할 제품을 선택해주세요.");
 		return false;
 	}
@@ -204,7 +204,7 @@ function wishDelete() {
 			$.ajax({
 				type: 'POST',
 				url: '/members/myPage/myWish/delete',
-				data: {"pkey": pkeyArray,
+				data: {"prodIdList": prodIdArray,
 					"sort": sortMethod}
 			}).done(function (fragment) { 
 				$("#ajaxArea").replaceWith(fragment);

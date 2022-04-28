@@ -96,9 +96,9 @@ $(".change_pwd_btn").click(() => {
 $("#change_cancel").click(() => {
     $("#change_pw_area").hide();
     $("#pwd_cont").show();
-   	$("#pwd")[0].reset();
-	$("#pwdChk")[0].reset();
-	$("#newPwd")[0].reset();
+   	$("#pwd").val('');
+	$("#pwdChk").val('');
+	$("#newPwd").val('');
 })
 
 $(".leave_btn").click(() => {

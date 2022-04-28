@@ -67,16 +67,13 @@ form .btn_login {
 
 .login_info {
     margin-top: 10px;
-    text-align: center;
-    font-size: 10px;
-    color: lightgray;
+    text-align: right;
 }
 
 .login_info a {
     font-size: 13px;
     text-decoration: none;
     color: black;
-    padding: 8px;
 }
 
 .login_info a:hover {

@@ -9,8 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import me.danawa.beans.PriceInfo;
-import me.danawa.beans.Product;
+import me.danawa.domain.PriceInfo;
+import me.danawa.domain.Product;
 
 public class Data {
 	public static final String WEB_DRIVER_ID = "webdriver.chrome.driver"; //드라이버 ID
@@ -54,6 +54,8 @@ public class Data {
 
 				WebElement nameEle = driver.findElement(By.className("prod_tit"));
 				String name = nameEle.getText(); //제품명
+				Product prod = new Product();
+				prod.setName(name);
 				
 				/* 가격정보 */
 				List<WebElement> priceEle = driver.findElements(By.cssSelector(".high_list .price .prc_t"));
@@ -104,9 +106,9 @@ public class Data {
 	           
 	            for(int k = 0; k < shippingList.size(); k++) {
 	            	PriceInfo priceBean = new PriceInfo();
-	            	priceBean.setName(name);
-	            	priceBean.setSitename(siteNameList.get(k));
-	            	priceBean.setSitelogo(logoList.get(k));
+	            	priceBean.setProduct(prod);
+	            	priceBean.setSiteName(siteNameList.get(k));
+	            	priceBean.setSiteLogo(logoList.get(k));
 	            	priceBean.setLink(linkList.get(k));
 	            	priceBean.setPrice(priceList.get(k));
 	            	priceBean.setShipping(shippingList.get(k));
@@ -236,7 +238,7 @@ public class Data {
 				productBean.setStorage(storage);
 				productBean.setWeight(weight);
 				productBean.setImage(image);
-				productBean.setRegdate(regdate);
+				productBean.setRegDate(regdate);
 				productBean.setSpec(spec);
 				productBeanList.add(productBean);
 			}

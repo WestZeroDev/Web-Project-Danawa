@@ -15,16 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
-import me.danawa.beans.PriceInfo;
-import me.danawa.beans.Product;
-import me.danawa.service.PriceService;
+import me.danawa.domain.Product;
 import me.danawa.service.ProductService;
 
 @Controller
 @RequiredArgsConstructor
 public class ProductController {
 	private final ProductService productService;
-	private final PriceService priceService;
 	
 	//노트북 전체
 	@GetMapping("/notebook")
@@ -36,12 +33,11 @@ public class ProductController {
 	}
 	
 	//노트북 정보 보기
-	@GetMapping("/notebook/info/{pkey}")
-	public String freeBoardRead(@PathVariable long pkey, Model model) {
-		Product prod = productService.findById(pkey);
-		List<PriceInfo> priceList = priceService.getPriceList(prod.getName());
+	@GetMapping("/notebook/info/{prodId}")
+	public String freeBoardRead(@PathVariable Long prodId, Model model) {
+		Product prod = productService.findById(prodId).get();		
 		model.addAttribute("prod", prod);
-		model.addAttribute("priceList", priceList);
+		model.addAttribute("priceList", prod.getPriceInfoList());
 		return "notebookInfo";
 	}
 
@@ -59,6 +55,7 @@ public class ProductController {
 			@RequestParam(value="maxPrice", required=false) String maxPrice,
 			@RequestParam(value="keyword", required=false) String keyword,
 			@PageableDefault Pageable pageable, Model model) {
+		
 		if(sort == "" || sort == null) {
 			sort = "latest";
 		}
@@ -78,10 +75,12 @@ public class ProductController {
 	}
 	
 	@GetMapping("/notebook/updateData")
-	public String updateData(HttpSession session) {
+	public String updateData(HttpSession session) {	
+		//관리자 계정만 허용
 		if(session.getAttribute("idKey") != null) {
-			//관리자 계정만 허용
 			if(session.getAttribute("idKey").toString().equals("admin@gmail.com")) {
+				//제품 크롤링
+				//productService.crawling();
 				//가격정보 업데이트
 				productService.updatePriceInfo();
 				//최저가 업데이트

@@ -16,8 +16,8 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
-import me.danawa.beans.UploadFile;
-import me.danawa.dao.UploadFileRepository;
+import me.danawa.domain.UploadFile;
+import me.danawa.repository.UploadFileRepository;
 
 @Service
 @Transactional
@@ -28,8 +28,8 @@ public class UploadFileService {
 	
 	public UploadFile store(MultipartFile file) throws Exception {
 		//originalName: 예시.jpg
-		//savedName: uuid예시.png
-		//path: d:/images/uuid예시.jpg
+		//savedName: uuid.png
+		//path: d:/images/uuid.jpg
 		//size: 4994942
 		//date: 2020-02-06
 		
@@ -44,7 +44,7 @@ public class UploadFileService {
 			uploadFile.setSavedName(savedName);
 			uploadFile.setPath(rootLocation.toString().replace(File.separatorChar, '/') + '/' + savedName);   
 			uploadFile.setSize(file.getResource().contentLength());
-			uploadFile.setDate(LocalDate.now());
+			uploadFile.setRegDate(LocalDate.now());
 			uploadFileRepository.save(uploadFile);
 			return uploadFile;
 			
@@ -64,7 +64,7 @@ public class UploadFileService {
 		}
 		//savedName 생성
 		UUID uuid = UUID.randomUUID();
-		String savedName = uuid.toString() + file.getOriginalFilename();
+		String savedName = uuid.toString();
 		File saveFile = new File(rootLocation, savedName);
 		FileCopyUtils.copy(file.getBytes(), saveFile);
 		return savedName;
@@ -84,7 +84,7 @@ public class UploadFileService {
 		}
 	}
 	
-	public void deleteById(long id) {
+	public void deleteById(Long id) {
 		Optional<UploadFile> result = uploadFileRepository.findById(id);
 		if(result.isPresent()) {
 			UploadFile uploadFile = result.get();

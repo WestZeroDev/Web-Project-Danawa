@@ -1,36 +1,45 @@
-package me.danawa.beans;
+package me.danawa.domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
-@Table(name="PRICE_INFO")
-@Getter @Setter @ToString
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class PriceInfo {
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long pnum;
+	@Column(name = "price_id")
+	private Long id;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "prod_name", referencedColumnName = "name")
+	private Product product;
+	
 	@NotNull
-	private String name;
+	private String siteName;
+	
 	@NotNull
-	private String sitename;
-	@NotNull
-	private String sitelogo;
+	private String siteLogo;
+	
 	@NotNull
 	private String link;
+	
 	@NotNull
 	private String shipping;
+	
 	@NotNull
 	private int price;
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import me.danawa.beans.UploadFile;
+import me.danawa.domain.UploadFile;
 import me.danawa.service.UploadFileService;
 
 @Controller
@@ -58,7 +58,7 @@ public class UploadFileController {
 	public String deleteFile(@RequestParam(value="src") String src) {
 		String[] result = src.split("/image/");
 		System.out.println(result[1]);
-		long id = Long.parseLong(result[1]);
+		Long id = Long.parseLong(result[1]);
 		uploadFileService.deleteById(id);
 		return "delete success";
 	}

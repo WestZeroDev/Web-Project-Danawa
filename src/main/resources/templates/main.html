@@ -17,7 +17,7 @@
 				<div class="cont" id="newDiv">
 					<ul class="prod_list" th:if="${prodList.totalElements != 0}">
 						<li class="prod_item" th:each="prod: ${prodList}">
-							<a th:href="@{'/notebook/info/' + ${prod.pkey}}" class="prod_link">
+							<a th:href="@{'/notebook/info/' + ${prod.id}}" class="prod_link">
 								<span class="thumb">
 									<img th:src="${prod.image}" th:alt="${prod.name}"/>
 								</span>
@@ -28,6 +28,8 @@
 					</ul>
 				</div>
 			</div>
+			
+			<input type="hidden" id="msg" name="msg" th:value="${msg}">
             
             <div class="ad">
 	            <ul>
@@ -62,5 +64,11 @@
         
         <th:block th:replace="fragments/footer :: footer"></th:block>
     </div>
+    
+<script>
+if($("#msg").val() != "") {
+	alert($("#msg").val());
+}
+</script>
 </body>
 </html>

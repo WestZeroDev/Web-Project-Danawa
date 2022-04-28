@@ -8,8 +8,8 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import me.danawa.beans.Member;
-import me.danawa.dao.MemberRepository;
+import me.danawa.domain.Member;
+import me.danawa.repository.MemberRepository;
 
 @Service
 @Transactional
@@ -17,12 +17,8 @@ import me.danawa.dao.MemberRepository;
 public class MemberService {
 	private final MemberRepository memberRepository;
 
-	public void join(Member member) {
-		memberRepository.save(member);
-	}
-	
-	public void update(Member member) {
-		memberRepository.save(member);
+	public Member join(Member member) {
+		return memberRepository.save(member);
 	}
 	
 	public void delete(Member member) {
@@ -33,8 +29,8 @@ public class MemberService {
 		return memberRepository.findAll();
 	}
 	
-	public Optional<Member> findById(String email) {
-		return memberRepository.findById(email);
+	public Optional<Member> findByEmail(String email) {
+		return memberRepository.findByEmail(email);
 	}
 	
 	public Optional<Member> findByNickname(String nickname) {
