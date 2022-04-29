@@ -47,9 +47,9 @@ public class ProductService {
 	
 	//노트북 전체
 	public Page<Product> getProdList(Pageable pageable, String sort) {
-        pageable = sort(pageable, sort);
-        return productRepository.findAll(pageable);
-    }
+		pageable = sort(pageable, sort);
+		return productRepository.findAll(pageable);
+	}
 	
 	//관심상품 목록
 	public Page<Product> getWishProdList(List<Wish> wishList, Pageable pageable, String sort) {
@@ -66,11 +66,11 @@ public class ProductService {
 		}
 		
 		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, 10);
+        	pageable = PageRequest.of(page, 10);
 		int start = (int)pageable.getOffset();
 		int end = Math.min((start + pageable.getPageSize()), prodList.size());
 		return new PageImpl<>(prodList.subList(start, end), pageable, prodList.size());
-    }
+    	}
 	
 	//메인 검색창
 	public Page<Product> mainSearch(Pageable pageable, String keyword) {
@@ -78,7 +78,7 @@ public class ProductService {
 		resultList.addAll(productRepository.findByNameContainsIgnoreCase(keyword));
 		
 		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, 5);
+        	pageable = PageRequest.of(page, 5);
 		int start = (int)pageable.getOffset();
 		int end = Math.min((start + pageable.getPageSize()), resultList.size());
 		return new PageImpl<>(resultList.subList(start, end), pageable, resultList.size());
@@ -138,7 +138,7 @@ public class ProductService {
 		sort(prodList, sort);
 		
 		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, 10);
+        	pageable = PageRequest.of(page, 10);
 		int start = (int)pageable.getOffset();
 		int end = Math.min((start + pageable.getPageSize()), prodList.size());
 		return new PageImpl<>(prodList.subList(start, end), pageable, prodList.size());
@@ -180,14 +180,14 @@ public class ProductService {
 	public Pageable sort(Pageable pageable, String sort) {
 		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
 		if(sort.equals("latest")) {
-        	pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "regDate").and(Sort.by(Sort.Direction.DESC, "id")));
-        }
-        else if(sort.equals("minPrice")) {
-        	pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.ASC, "price").and(Sort.by(Sort.Direction.DESC, "regDate")).and(Sort.by(Sort.Direction.DESC, "id")));
-        }
-        else if(sort.equals("maxPrice")) {
-        	pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "price").and(Sort.by(Sort.Direction.DESC, "regDate")).and(Sort.by(Sort.Direction.DESC, "id")));
-        }
+			pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "regDate").and(Sort.by(Sort.Direction.DESC, "id")));
+		}
+		else if(sort.equals("minPrice")) {
+			pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.ASC, "price").and(Sort.by(Sort.Direction.DESC, "regDate")).and(Sort.by(Sort.Direction.DESC, "id")));
+		}
+		else if(sort.equals("maxPrice")) {
+			pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "price").and(Sort.by(Sort.Direction.DESC, "regDate")).and(Sort.by(Sort.Direction.DESC, "id")));
+		}
 		return pageable;
 	}
 	
@@ -237,77 +237,77 @@ public class ProductService {
 				System.out.println(name);
 				
 				/* 노트북 정보 */
-	    		WebElement imageEle = driver.findElement(By.cssSelector("#baseImage"));
-	            String image = imageEle.getAttribute("src"); //이미지
+	    			WebElement imageEle = driver.findElement(By.cssSelector("#baseImage"));
+	            		String image = imageEle.getAttribute("src"); //이미지
 	            
-	            List<WebElement> specEle = driver.findElements(By.className("items"));
-	    		String spec = "";
-	    		for(WebElement e : specEle) {
-	    			spec += e.getText();
-	    		}
-	    		System.out.println(spec); //상세정보
-	    		
-	    		List<WebElement> field = driver.findElements(By.cssSelector("th.tit"));
-	    		List<WebElement> value = driver.findElements(By.cssSelector("td.dsc"));
-	    		
-	    		String brand = "";
-	    		String cpu = "";
-	    		double size = 0;
-	    		String memory = "";
-	    		int storage = 0; 
-	    		String os = "";
-	    		double weight = 0;
-	    		String regdate = "";
-	    		
-	    		for(int j = 0; j < field.size(); j++) {
-	    			if(field.get(j).getText().equals("제조회사")) {
-	    				String[] res = value.get(j).getText().split(" ");
-	    				brand = res[0];
-	    			}
-	    			else if(field.get(j).getText().equals("등록년월")) {
-	    				regdate = value.get(j).getText();
-	    			}
-	    			else if(field.get(j).getText().equals("화면 크기")) {
-	    				String str = value.get(j).getText();
-	    				String[] res = str.split("\\(");
-	    				size = Double.parseDouble(res[1].replace("인치)", ""));
-	    			}
-	    			else if(field.get(j).getText().equals("CPU 종류")) {
-	    				cpu = value.get(j).getText();
-	    			}
-	    			else if(field.get(j).getText().contains("운영체제")) {
-	    				os = value.get(j).getText();
-	    			}
-	    			else if(field.get(j).getText().equals("메모리")) {
-	    				memory = value.get(j).getText();
-	    			}
-	    			else if(field.get(j).getText().equals("저장 용량")) {
-	    				String res = value.get(j).getText().replaceAll("[^0-9]", "");
-	    				storage = Integer.parseInt(res);
-	    				if(storage < 10) {
-	    					storage *= 1000;
-	    				}
-	    			}
-	    			else if(field.get(j).getText().equals("무게")) {
-	    				String res = value.get(j).getText().replaceAll("[a-z]", "");
-	    				weight = Double.parseDouble(res);
-	    				if(weight > 100) weight /= 1000;
-	    			}
-	    		}
-	    		
-	    		Product prod = new Product();
-	    		prod.setName(name);
-	    		prod.setBrand(brand);
-	    		prod.setCpu(cpu);
-	    		prod.setMemory(memory);
-	    		prod.setOs(os);
-	    		prod.setSize(size);
-	    		prod.setStorage(storage);
-	    		prod.setWeight(weight);
-	    		prod.setImage(image);
-	    		prod.setRegDate(regdate);
-	    		prod.setSpec(spec);
-	    		productRepository.save(prod);
+				List<WebElement> specEle = driver.findElements(By.className("items"));
+				String spec = "";
+				for(WebElement e : specEle) {
+					spec += e.getText();
+				}
+				System.out.println(spec); //상세정보
+
+				List<WebElement> field = driver.findElements(By.cssSelector("th.tit"));
+				List<WebElement> value = driver.findElements(By.cssSelector("td.dsc"));
+
+				String brand = "";
+				String cpu = "";
+				double size = 0;
+				String memory = "";
+				int storage = 0; 
+				String os = "";
+				double weight = 0;
+				String regdate = "";
+
+				for(int j = 0; j < field.size(); j++) {
+					if(field.get(j).getText().equals("제조회사")) {
+						String[] res = value.get(j).getText().split(" ");
+						brand = res[0];
+					}
+					else if(field.get(j).getText().equals("등록년월")) {
+						regdate = value.get(j).getText();
+					}
+					else if(field.get(j).getText().equals("화면 크기")) {
+						String str = value.get(j).getText();
+						String[] res = str.split("\\(");
+						size = Double.parseDouble(res[1].replace("인치)", ""));
+					}
+					else if(field.get(j).getText().equals("CPU 종류")) {
+						cpu = value.get(j).getText();
+					}
+					else if(field.get(j).getText().contains("운영체제")) {
+						os = value.get(j).getText();
+					}
+					else if(field.get(j).getText().equals("메모리")) {
+						memory = value.get(j).getText();
+					}
+					else if(field.get(j).getText().equals("저장 용량")) {
+						String res = value.get(j).getText().replaceAll("[^0-9]", "");
+						storage = Integer.parseInt(res);
+						if(storage < 10) {
+							storage *= 1000;
+						}
+					}
+					else if(field.get(j).getText().equals("무게")) {
+						String res = value.get(j).getText().replaceAll("[a-z]", "");
+						weight = Double.parseDouble(res);
+						if(weight > 100) weight /= 1000;
+					}
+				}
+
+				Product prod = new Product();
+				prod.setName(name);
+				prod.setBrand(brand);
+				prod.setCpu(cpu);
+				prod.setMemory(memory);
+				prod.setOs(os);
+				prod.setSize(size);
+				prod.setStorage(storage);
+				prod.setWeight(weight);
+				prod.setImage(image);
+				prod.setRegDate(regdate);
+				prod.setSpec(spec);
+				productRepository.save(prod);
 				
 				/* 가격정보 */
 				List<WebElement> priceEle = driver.findElements(By.cssSelector(".high_list .price .prc_t"));
@@ -350,24 +350,24 @@ public class ProductService {
 					}
 				}
 				
-	            List<WebElement> shippingEle = driver.findElements(By.cssSelector("#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.lowest_area > div.lowest_list > table > tbody.high_list span.stxt.deleveryBaseSection"));
-	            List<String> shippingList = new ArrayList<>();
-	            for (WebElement e : shippingEle) {
-	            	shippingList.add(e.getText()); //배송비
-	            }
-	           
-	            for(int k = 0; k < shippingList.size(); k++) {
-	            	PriceInfo priceBean = new PriceInfo();
-	            	priceBean.setProduct(prod);
-	            	priceBean.setSiteName(siteNameList.get(k));
-	            	priceBean.setSiteLogo(logoList.get(k));
-	            	priceBean.setLink(linkList.get(k));
-	            	priceBean.setPrice(priceList.get(k));
-	            	priceBean.setShipping(shippingList.get(k));
-	            	priceRepository.save(priceBean);
-	            }
-	            
-	            productRepository.findByName(name).get().setPrice(Collections.min(priceList));
+			    	List<WebElement> shippingEle = driver.findElements(By.cssSelector("#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.lowest_area > div.lowest_list > table > tbody.high_list span.stxt.deleveryBaseSection"));
+			    	List<String> shippingList = new ArrayList<>();
+			    	for (WebElement e : shippingEle) {
+					shippingList.add(e.getText()); //배송비
+			    	}
+
+			    	for(int k = 0; k < shippingList.size(); k++) {
+					PriceInfo priceBean = new PriceInfo();
+					priceBean.setProduct(prod);
+					priceBean.setSiteName(siteNameList.get(k));
+					priceBean.setSiteLogo(logoList.get(k));
+					priceBean.setLink(linkList.get(k));
+					priceBean.setPrice(priceList.get(k));
+					priceBean.setShipping(shippingList.get(k));
+					priceRepository.save(priceBean);
+			    	}
+				
+				productRepository.findByName(name).get().setPrice(Collections.min(priceList));
 			}
 		}
 
