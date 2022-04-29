@@ -50,7 +50,7 @@ public class MemberController {
 		member.setPwd(form.getPwd());
 		member.setName(form.getName());
 		member.setNickname(form.getNickname());
-		memberService.join(member);
+		memberService.save(member);
 		session.setAttribute("idKey", member.getEmail());
 		session.setAttribute("nickname", member.getNickname());
 		return "redirect:/";
@@ -187,6 +187,7 @@ public class MemberController {
 			String newPwd = form.getNewPwd();
 			member.setPwd(newPwd);
 		}
+		memberService.save(member);
 		session.setAttribute("modifyId", idKey);
 		session.removeAttribute("idKey");
 		return "redirect:/members/modifyResult";
@@ -243,7 +244,7 @@ public class MemberController {
 		Member member = memberService.findByEmail(email).get();
 		Product prod = productService.findById(prodId).get();
 
-		if(member.getWishList().stream().anyMatch(e -> e.getProduct().equals(prod))) {
+		if(member.getWishList().stream().anyMatch(e -> e.getProduct() == prod)) {
 			return "이미 등록된 상품입니다.";
 		}
 		

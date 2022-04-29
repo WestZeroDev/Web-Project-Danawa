@@ -12,7 +12,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import me.danawa.domain.PriceInfo;
 import me.danawa.domain.Product;
 
-public class Data {
+public class Crawling {
 	public static final String WEB_DRIVER_ID = "webdriver.chrome.driver"; //드라이버 ID
 	public static final String WEB_DRIVER_PATH = "E:\\crawling\\chromedriver.exe"; //드라이버 경로
 	

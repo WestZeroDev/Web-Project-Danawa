@@ -9,5 +9,5 @@ public class DanawaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DanawaApplication.class, args);
 	}
-
+	
 }

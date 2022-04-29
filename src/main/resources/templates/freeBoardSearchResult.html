@@ -27,7 +27,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="post: ${boardList}">
-                            <td class="title"><a th:href="@{'/board/free/view/' + ${post.id}}"><span id="subject">[[${post.ftitle}]]</span></a><span id="comment" th:if="${post.fcomment != 0}">[[${post.fcomment}]]</span></td>
+                            <td class="title"><a th:href="@{'/board/free/view/' + ${post.id}}"><span id="subject">[[${post.title}]]</span></a><span id="comment" th:if="${post.comment != 0}">[[${post.comment}]]</span></td>
                             <td class="author" th:text="${post.nickname}"></td>
                             <td class="date" th:text="${post.regDate}"></td>
                             <td class="view" th:text="${post.view}"></td>

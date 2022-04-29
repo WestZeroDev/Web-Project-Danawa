@@ -45,11 +45,13 @@ public class ProductService {
 		return productRepository.findById(prodId);
 	}
 	
+	//노트북 전체
 	public Page<Product> getProdList(Pageable pageable, String sort) {
         pageable = sort(pageable, sort);
         return productRepository.findAll(pageable);
     }
 	
+	//관심상품 목록
 	public Page<Product> getWishProdList(List<Wish> wishList, Pageable pageable, String sort) {
 		List<Product> prodList = new ArrayList<>();
 		for(Wish wish : wishList) {
@@ -70,9 +72,11 @@ public class ProductService {
 		return new PageImpl<>(prodList.subList(start, end), pageable, prodList.size());
     }
 	
+	//메인 검색창
 	public Page<Product> mainSearch(Pageable pageable, String keyword) {
 		List<Product> resultList = productRepository.findBySpecContainsIgnoreCase(keyword);
 		resultList.addAll(productRepository.findByNameContainsIgnoreCase(keyword));
+		
 		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, 5);
 		int start = (int)pageable.getOffset();
@@ -80,9 +84,11 @@ public class ProductService {
 		return new PageImpl<>(resultList.subList(start, end), pageable, resultList.size());
 	}
 	
+	//노트북 상세검색
 	public Page<Product> search(List<String> brand,	List<String> cpu, int[] size,
 			List<String> memory, int[] storage, List<String> os, int[] weight,
 			String sort, String minPrice, String maxPrice, String keyword, Pageable pageable) {
+		
 		List<List<Product>> resultList = new ArrayList<>();
 		List<Product> prodList = new ArrayList<>();
 		
@@ -138,6 +144,7 @@ public class ProductService {
 		return new PageImpl<>(prodList.subList(start, end), pageable, prodList.size());
 	}
 	
+	//정렬
 	public void sort(List<Product> prodList, String sort) {
 		if(sort.equals("minPrice")) {
 			prodList.sort(new Comparator<Product>() {
@@ -169,16 +176,17 @@ public class ProductService {
 		}
 	}
 	
+	//정렬
 	public Pageable sort(Pageable pageable, String sort) {
 		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
 		if(sort.equals("latest")) {
-        	pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "regDate"));
+        	pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "regDate").and(Sort.by(Sort.Direction.DESC, "id")));
         }
         else if(sort.equals("minPrice")) {
-        	pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.ASC, "price").and(Sort.by(Sort.Direction.DESC, "regDate")));
+        	pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.ASC, "price").and(Sort.by(Sort.Direction.DESC, "regDate")).and(Sort.by(Sort.Direction.DESC, "id")));
         }
         else if(sort.equals("maxPrice")) {
-        	pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "price").and(Sort.by(Sort.Direction.DESC, "regDate")));
+        	pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "price").and(Sort.by(Sort.Direction.DESC, "regDate")).and(Sort.by(Sort.Direction.DESC, "id")));
         }
 		return pageable;
 	}
@@ -203,9 +211,7 @@ public class ProductService {
 	
 		//품절 상품 제외
 		driver.findElement(By.xpath("//*[@id=\"danawa_content\"]/div[6]/div/div[1]/div/a")).click();
-		try {Thread.sleep(1000);} catch(InterruptedException e) {}
 		driver.findElement(By.xpath("//*[@id=\"defaultExptFilterArea\"]/div[3]/label/span")).click();
-		try {Thread.sleep(1000);} catch(InterruptedException e) {}
 		driver.findElement(By.xpath("//*[@id=\"detailSearchSubmitBtn\"]")).click();
 
 		try {Thread.sleep(3000);} catch(InterruptedException e) {}
@@ -216,8 +222,6 @@ public class ProductService {
 			prodList.add(e.getAttribute("href"));
 		}
 		
-		List<PriceInfo> priceBeanList = new ArrayList<>();
-
 		for(int i = 0; i < prodList.size(); i++) {
 			if(prodList.get(i).contains("pcode")) {
 				String prodUrl = prodList.get(i);
@@ -360,7 +364,6 @@ public class ProductService {
 	            	priceBean.setLink(linkList.get(k));
 	            	priceBean.setPrice(priceList.get(k));
 	            	priceBean.setShipping(shippingList.get(k));
-	            	priceBeanList.add(priceBean);
 	            	priceRepository.save(priceBean);
 	            }
 	            

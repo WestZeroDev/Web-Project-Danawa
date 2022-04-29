@@ -17,7 +17,7 @@ import me.danawa.repository.MemberRepository;
 public class MemberService {
 	private final MemberRepository memberRepository;
 
-	public Member join(Member member) {
+	public Member save(Member member) {
 		return memberRepository.save(member);
 	}
 	

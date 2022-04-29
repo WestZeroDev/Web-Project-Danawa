@@ -17,7 +17,7 @@
 				<div class="cont" id="newDiv">
 					<ul class="prod_list" th:if="${prodList.totalElements != 0}">
 						<li class="prod_item" th:each="prod: ${prodList}">
-							<a th:href="@{'/notebook/info/' + ${prod.id}}" class="prod_link">
+							<a th:href="@{'/notebook/info/' + ${prod.id}}" target="_blank" class="prod_link">
 								<span class="thumb">
 									<img th:src="${prod.image}" th:alt="${prod.name}"/>
 								</span>
