@@ -28,8 +28,8 @@ domain: 엔티티가 모여 있는 계층, 모든 계층에서 사용
 </br></br>
 
 ## Class Diagram
+이미지를 클릭하면 선명하게 볼 수 있습니다.  
 ![Class Diagram](https://user-images.githubusercontent.com/103295635/165959951-dfc5db07-1647-47b7-9b34-417c2d86300f.jpg)
-회원이 탈퇴해도 게시물과 댓글을 남기기 위해 Post, Comment는 Member와 연관관계를 맺지 않았습니다.
 <br/><br/>
 
 ## 프로젝트 기간
