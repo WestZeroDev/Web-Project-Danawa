@@ -1,5 +1,6 @@
 # Web-Project-Danawa
-다나와 사이트를 참고하여 게시판과 노트북 상세 검색을 구현한 웹 프로젝트입니다.
+다나와 사이트를 참고하여 게시판과 노트북 상세 검색을 구현한 웹 프로젝트입니다.  
+개인 프로젝트입니다.
 </br></br>
   
 ## 개발 환경 및 사용 기술
@@ -7,7 +8,7 @@ OS: Window
 IDE: Eclipse  
 Front: JavaScript, jQuery, Thymeleaf  
 Back: Java 11, SpringBoot, Gradle, Spring Data JPA, H2 Database  
-크롤링: Selenium
+Crawling: Selenium
 </br></br>
 
 ## 주요 기능
