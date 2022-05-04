@@ -90,51 +90,39 @@ public class ProductService {
 			String sort, String minPrice, String maxPrice, String keyword, Pageable pageable) {
 		
 		List<List<Product>> resultList = new ArrayList<>();
-		List<Product> prodList = new ArrayList<>();
+		List<Product> prodList = productRepository.findAll();
 		
-		if(brand != null) {
-			resultList.add(productRepository.brandOption(brand));
-		}
-		if(cpu != null) {
-			resultList.add(productRepository.cpuOption(cpu));
-		}
-		if(size != null) {
-			resultList.add(productRepository.sizeOption(size));
-		}
-		if(memory != null) {
-			resultList.add(productRepository.memoryOption(memory));
-		}
-		if(storage != null) {
-			resultList.add(productRepository.storageOption(storage));
-		}
-		if(os != null) {
-			resultList.add(productRepository.osOption(os));
-		}
-		if(weight != null) {
-			resultList.add(productRepository.weightOption(weight));
-		}
+		if(brand != null) resultList.add(productRepository.brandOption(brand));
+		 
+		if(cpu != null) resultList.add(productRepository.cpuOption(cpu));
+		
+		if(size != null) resultList.add(productRepository.sizeOption(size));
+		
+		if(memory != null) resultList.add(productRepository.memoryOption(memory));
+		
+		if(storage != null) resultList.add(productRepository.storageOption(storage));
+		
+		if(os != null) resultList.add(productRepository.osOption(os));
+		
+		if(weight != null) resultList.add(productRepository.weightOption(weight));
+		
 		if(minPrice != "" && maxPrice != "") {
 			int min = Integer.parseInt(minPrice);
 			int max = Integer.parseInt(maxPrice);
 			resultList.add(productRepository.priceOption(min, max));
 		}
+		
 		if(keyword != "") {
 			List<Product> tmp = productRepository.findBySpecContainsIgnoreCase(keyword);
 			tmp.addAll(productRepository.findByNameContainsIgnoreCase(keyword));
 			resultList.add(tmp);
 		}
 		
-		for(int i = 0; i < resultList.size(); i++) {
-			if(resultList.get(i).size() == 0) {
-				prodList.clear();
-				break;
-			}
-			else {
-				if(i == 0) prodList = resultList.get(i);
-				else prodList.retainAll(resultList.get(i));
-			}
+		for(List<Product> res : resultList) {
+			prodList.retainAll(res);
+			if(prodList.isEmpty()) break;
 		}
-		
+
 		sort(prodList, sort);
 		
 		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
