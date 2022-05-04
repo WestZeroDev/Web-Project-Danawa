@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import me.danawa.controller.SearchForm;
 import me.danawa.domain.PriceInfo;
 import me.danawa.domain.Product;
 import me.danawa.domain.Wish;
@@ -85,36 +86,33 @@ public class ProductService {
 	}
 	
 	//노트북 상세검색
-	public Page<Product> search(List<String> brand,	List<String> cpu, int[] size,
-			List<String> memory, int[] storage, List<String> os, int[] weight,
-			String sort, String minPrice, String maxPrice, String keyword, Pageable pageable) {
-		
+	public Page<Product> search(SearchForm form, String sort, Pageable pageable) {
 		List<List<Product>> resultList = new ArrayList<>();
 		List<Product> prodList = productRepository.findAll();
 		
-		if(brand != null) resultList.add(productRepository.brandOption(brand));
+		if(form.getBrand() != null) resultList.add(productRepository.brandOption(form.getBrand()));
 		 
-		if(cpu != null) resultList.add(productRepository.cpuOption(cpu));
+		if(form.getCpu() != null) resultList.add(productRepository.cpuOption(form.getCpu()));
 		
-		if(size != null) resultList.add(productRepository.sizeOption(size));
+		if(form.getSize() != null) resultList.add(productRepository.sizeOption(form.getSize()));
 		
-		if(memory != null) resultList.add(productRepository.memoryOption(memory));
+		if(form.getMemory() != null) resultList.add(productRepository.memoryOption(form.getMemory()));
 		
-		if(storage != null) resultList.add(productRepository.storageOption(storage));
+		if(form.getStorage() != null) resultList.add(productRepository.storageOption(form.getStorage()));
 		
-		if(os != null) resultList.add(productRepository.osOption(os));
+		if(form.getOs() != null) resultList.add(productRepository.osOption(form.getOs()));
 		
-		if(weight != null) resultList.add(productRepository.weightOption(weight));
+		if(form.getWeight() != null) resultList.add(productRepository.weightOption(form.getWeight()));
 		
-		if(minPrice != "" && maxPrice != "") {
-			int min = Integer.parseInt(minPrice);
-			int max = Integer.parseInt(maxPrice);
+		if(form.getMinPrice() != "" && form.getMaxPrice() != "") {
+			int min = Integer.parseInt(form.getMinPrice());
+			int max = Integer.parseInt(form.getMaxPrice());
 			resultList.add(productRepository.priceOption(min, max));
 		}
 		
-		if(keyword != "") {
-			List<Product> tmp = productRepository.findBySpecContainsIgnoreCase(keyword);
-			tmp.addAll(productRepository.findByNameContainsIgnoreCase(keyword));
+		if(form.getKeyword() != "") {
+			List<Product> tmp = productRepository.findBySpecContainsIgnoreCase(form.getKeyword());
+			tmp.addAll(productRepository.findByNameContainsIgnoreCase(form.getKeyword()));
 			resultList.add(tmp);
 		}
 		
@@ -126,7 +124,7 @@ public class ProductService {
 		sort(prodList, sort);
 		
 		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        	pageable = PageRequest.of(page, 10);
+        pageable = PageRequest.of(page, 10);
 		int start = (int)pageable.getOffset();
 		int end = Math.min((start + pageable.getPageSize()), prodList.size());
 		return new PageImpl<>(prodList.subList(start, end), pageable, prodList.size());

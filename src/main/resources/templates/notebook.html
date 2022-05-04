@@ -187,10 +187,9 @@
 	</div>
 	
 <script>
-var sortMethod = '';
+var sortMethod = 'latest';
 function sortOption(sort) {
 	sortMethod = sort;
-	console.log(sortMethod);
 	checkOption();
 }
 
@@ -227,10 +226,10 @@ function innerSearch() {
 
 function resetOption() {
 	$("input:checkbox").prop("checked", false);
-	sortMethod = "latest";
 	minPriceInput = '';
 	maxPriceInput = '';
 	searchKeyword = '';
+	sortMethod = 'latest';
 	checkOption();
 }
 

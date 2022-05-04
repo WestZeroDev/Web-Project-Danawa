@@ -57,7 +57,7 @@ public class Post {
 	private int comment;
 	
 	@ElementCollection(fetch = FetchType.LAZY)
-	private List<Long> fileList;
+	private List<Long> fileList = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
 	private List<Like> likeList = new ArrayList<>();

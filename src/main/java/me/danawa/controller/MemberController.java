@@ -273,8 +273,7 @@ public class MemberController {
 	
 	//관심상품 정렬
 	@PostMapping("/members/myPage/myWish/sort")
-	public String myWishSort(@RequestParam(value="sort", required=false) String sort,
-			@PageableDefault Pageable pageable, Model model, HttpSession session) {
+	public String myWishSort(String sort, @PageableDefault Pageable pageable, Model model, HttpSession session) {
 		String idKey = session.getAttribute("idKey").toString();
 		Member member = memberService.findByEmail(idKey).get();
 		model.addAttribute("sortMethod", sort);
@@ -284,8 +283,7 @@ public class MemberController {
 	
 	//관심상품 다중선택삭제
 	@PostMapping("/members/myPage/myWish/delete")
-	public String myWishSort(@RequestParam(value="prodIdList[]") List<Long> prodIdList,
-			@RequestParam(value="sort", required=false) String sort,
+	public String myWishSort(@RequestParam(value="prodIdList[]") List<Long> prodIdList, String sort,
 			@PageableDefault Pageable pageable, Model model, HttpSession session) {
 		String idKey = session.getAttribute("idKey").toString();
 		Member member = memberService.findByEmail(idKey).get();

@@ -38,7 +38,7 @@ public class FreeBoardController {
 	
 	//자유게시판
 	@GetMapping("/board/free")
-	public String freeBoardList(@PageableDefault Pageable pageable, @RequestParam(value="sort", required=false) String sort, Model model) {
+	public String freeBoardList(@PageableDefault Pageable pageable, String sort, Model model) {
 		List<String> sortList = Arrays.asList("latest", "view", "like");
 		if(sort == null || !sortList.contains(sort)) {
 			sort = "latest";

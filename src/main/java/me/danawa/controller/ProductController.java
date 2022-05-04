@@ -1,7 +1,5 @@
 package me.danawa.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.data.domain.Page;
@@ -12,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import lombok.RequiredArgsConstructor;
 import me.danawa.domain.Product;
@@ -43,32 +40,11 @@ public class ProductController {
 
 	//노트북 상세검색
 	@PostMapping("/notebook/option")
-	public String option(@RequestParam(value="brand[]", required=false) List<String> brand,
-			@RequestParam(value="cpu[]", required=false) List<String> cpu,
-			@RequestParam(value="size[]", required=false) int[] size,
-			@RequestParam(value="memory[]", required=false) List<String> memory,
-			@RequestParam(value="storage[]", required=false) int[] storage,
-			@RequestParam(value="os[]", required=false) List<String> os,
-			@RequestParam(value="weight[]", required=false) int[] weight,
-			@RequestParam(value="sort", required=false) String sort,
-			@RequestParam(value="minPrice", required=false) String minPrice,
-			@RequestParam(value="maxPrice", required=false) String maxPrice,
-			@RequestParam(value="keyword", required=false) String keyword,
-			@PageableDefault Pageable pageable, Model model) {
+	public String option(SearchForm form, String sort, @PageableDefault Pageable pageable, Model model) {
+		SearchForm emptyForm = new SearchForm();
+		Page<Product> prodList = productService.getProdList(pageable, sort);
+		if(!form.equals(emptyForm)) prodList = productService.search(form, sort, pageable);
 		
-		if(sort == "" || sort == null) {
-			sort = "latest";
-		}
-
-		if(brand == null && cpu == null && size == null && memory == null && storage == null
-				&& os == null && weight == null && minPrice == "" && maxPrice == "" && keyword == "") {
-			Page<Product> prodList = productService.getProdList(pageable, sort);
-			model.addAttribute("sortMethod", sort);
-			model.addAttribute("prodList", prodList);
-			return "notebook :: #ajaxArea";
-		}
-		
-		Page<Product> prodList = productService.search(brand, cpu, size, memory, storage, os, weight, sort, minPrice, maxPrice, keyword, pageable);
 		model.addAttribute("sortMethod", sort);
 		model.addAttribute("prodList", prodList);
 		return "notebook :: #ajaxArea";
