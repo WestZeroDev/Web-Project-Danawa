@@ -4,11 +4,11 @@
 </br></br>
   
 ## 개발 환경 및 사용 기술
-OS: Window  
-IDE: Eclipse  
-Front: JavaScript, jQuery, Thymeleaf  
-Back: Java 11, SpringBoot, Gradle, Spring Data JPA, H2 Database  
-Crawling: Selenium
+OS : Window  
+IDE : Eclipse  
+Front : JavaScript, jQuery, Thymeleaf  
+Back : Java 11, SpringBoot, Gradle, Spring Data JPA, H2 Database  
+Crawling : Selenium
 </br></br>
 
 ## 주요 기능
@@ -22,10 +22,10 @@ Crawling: Selenium
 </br></br>
 
 ## 애플리케이션 구조
-controller: 웹 계층  
-service: 비즈니스 로직, 트랜잭션 처리  
-repository: JPA를 직접 사용하는 계층  
-domain: 엔티티가 모여 있는 계층, 모든 계층에서 사용
+controller : 웹 계층  
+service : 비즈니스 로직, 트랜잭션 처리  
+repository : JPA를 직접 사용하는 계층  
+domain : 엔티티가 모여 있는 계층, 모든 계층에서 사용
 </br></br>
 
 ## Class Diagram
@@ -43,7 +43,7 @@ http://www.danawa.com/
 
 ## 프로젝트 시연 영상
 유튜브로 연결됩니다.
-#### 💻 노트북 상세검색, 관심상품, 상세보기
+#### 💻 노트북 상세 검색, 관심상품, 상세 보기
 [![Video Label](http://img.youtube.com/vi/bZnr_pLLitg/0.jpg)](https://youtu.be/bZnr_pLLitg)
 <br/><br/>
 #### 👤 회원가입, 로그인, 회원정보수정, 회원탈퇴
