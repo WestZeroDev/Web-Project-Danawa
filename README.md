@@ -1,14 +1,14 @@
 # Web-Project-Danawa
 다나와 사이트를 참고하여 게시판과 노트북 상세 검색을 구현한 웹 프로젝트입니다.  
-개인 프로젝트입니다. 자세한 설명은 [[Notion] Web Project Danawa](https://wegie.notion.site/Web-Project-Danawa-b453b35bd0304535a3d03d0104bf8811)에서 확인해주세요!
+자세한 설명은 [[Notion] Web Project Danawa](https://wegie.notion.site/Web-Project-Danawa-b453b35bd0304535a3d03d0104bf8811)에서 확인해주세요!
 </br></br>
 
 ## 개발 환경 및 사용 기술
-OS : Window  
-IDE : Eclipse  
-Front : JavaScript, jQuery, Thymeleaf  
-Back : Java 11, SpringBoot, Gradle, Spring Data JPA, H2 Database  
-Crawling : Selenium
+OS: Window  
+IDE: Eclipse  
+Front-End: JavaScript, jQuery, Thymeleaf  
+Back-End: Java 11, SpringBoot, Gradle, Spring Data JPA, H2 Database  
+Crawling: Selenium
 </br></br>
 
 ## 주요 기능
@@ -37,5 +37,5 @@ http://www.danawa.com/
 #### 👤 회원가입, 로그인, 회원정보수정, 회원탈퇴
 [![Video Label](http://img.youtube.com/vi/mlndTOWwJME/0.jpg)](https://youtu.be/mlndTOWwJME)
 <br/><br/>
-#### ✏️ 자유게시판 글 작성, 조회, 수정, 삭제, 내가 쓴 글 + 🔍 전체 검색 기능
+#### ✏️ 자유게시판 CRUD + 🔍 전체 검색
 [![Video Label](http://img.youtube.com/vi/Hxb9mSJKvJk/0.jpg)](https://youtu.be/Hxb9mSJKvJk)
