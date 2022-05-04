@@ -43,11 +43,11 @@ http://www.danawa.com/
 
 ## 프로젝트 시연 영상
 유튜브로 연결됩니다.
-#### 노트북: 상세검색, 관심상품, 상세보기
+#### 💻 노트북 상세검색, 관심상품, 상세보기
 [![Video Label](http://img.youtube.com/vi/bZnr_pLLitg/0.jpg)](https://youtu.be/bZnr_pLLitg)
 <br/><br/>
-#### 회원: 회원가입, 로그인, 회원정보수정, 회원탈퇴
+#### 👤 회원가입, 로그인, 회원정보수정, 회원탈퇴
 [![Video Label](http://img.youtube.com/vi/mlndTOWwJME/0.jpg)](https://youtu.be/mlndTOWwJME)
 <br/><br/>
-#### 자유게시판: 글 작성, 수정, 삭제, 검색, 내가 쓴 글
+#### ✏️ 자유게시판 글 작성, 조회, 수정, 삭제, 내가 쓴 글 + 🔍 전체 검색 기능
 [![Video Label](http://img.youtube.com/vi/Hxb9mSJKvJk/0.jpg)](https://youtu.be/Hxb9mSJKvJk)
