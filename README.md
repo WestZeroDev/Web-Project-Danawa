@@ -1,5 +1,6 @@
 # Web-Project-Danawa
-다나와 사이트를 참고하여 게시판과 노트북 상세 검색을 구현한 웹 프로젝트입니다.
+다나와 사이트를 참고하여 게시판과 노트북 상세 검색을 구현한 웹 프로젝트입니다.  
+개인 프로젝트입니다.
 </br></br>
   
 ## 개발 환경 및 사용 기술
@@ -7,7 +8,7 @@ OS: Window
 IDE: Eclipse  
 Front: JavaScript, jQuery, Thymeleaf  
 Back: Java 11, SpringBoot, Gradle, Spring Data JPA, H2 Database  
-크롤링: Selenium
+Crawling: Selenium
 </br></br>
 
 ## 주요 기능
@@ -28,8 +29,8 @@ domain: 엔티티가 모여 있는 계층, 모든 계층에서 사용
 </br></br>
 
 ## Class Diagram
+이미지를 클릭하면 선명하게 볼 수 있습니다.  
 ![Class Diagram](https://user-images.githubusercontent.com/103295635/165959951-dfc5db07-1647-47b7-9b34-417c2d86300f.jpg)
-회원이 탈퇴해도 게시물과 댓글을 남기기 위해 Post, Comment는 Member와 연관관계를 맺지 않았습니다.
 <br/><br/>
 
 ## 프로젝트 기간
