@@ -124,7 +124,7 @@ public class ProductService {
 		sort(prodList, sort);
 		
 		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, 10);
+        	pageable = PageRequest.of(page, 10);
 		int start = (int)pageable.getOffset();
 		int end = Math.min((start + pageable.getPageSize()), prodList.size());
 		return new PageImpl<>(prodList.subList(start, end), pageable, prodList.size());
@@ -223,8 +223,8 @@ public class ProductService {
 				System.out.println(name);
 				
 				/* 제품정보 */
-	    		WebElement imageEle = driver.findElement(By.cssSelector("#baseImage"));
-	            String image = imageEle.getAttribute("src"); //이미지
+	    			WebElement imageEle = driver.findElement(By.cssSelector("#baseImage"));
+	            		String image = imageEle.getAttribute("src"); //이미지
 	            
 				List<WebElement> specEle = driver.findElements(By.className("items"));
 				String spec = "";
