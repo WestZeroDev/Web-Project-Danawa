@@ -298,7 +298,7 @@ public class ProductService {
 				List<WebElement> priceEle = driver.findElements(By.cssSelector(".high_list .price .prc_t"));
 				List<Integer> priceList = new ArrayList<>();
 				for(WebElement e : priceEle) {
-					if (e.getText().contains(",")) {
+					if(e.getText().contains(",")) {
 						priceList.add(Integer.parseInt(e.getText().replace(",", ""))); //가격
 					}
 				}
@@ -336,13 +336,13 @@ public class ProductService {
 					}
 				}
 				
-			    List<WebElement> shippingEle = driver.findElements(By.cssSelector("#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.lowest_area > div.lowest_list > table > tbody.high_list span.stxt.deleveryBaseSection"));
-			    List<String> shippingList = new ArrayList<>();
-			    for (WebElement e : shippingEle) {
-			    	shippingList.add(e.getText()); //배송비
-			    }
+			    	List<WebElement> shippingEle = driver.findElements(By.cssSelector("#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.lowest_area > div.lowest_list > table > tbody.high_list span.stxt.deleveryBaseSection"));
+			    	List<String> shippingList = new ArrayList<>();
+			    	for(WebElement e : shippingEle) {
+			    		shippingList.add(e.getText()); //배송비
+			    	}
 
-			    for(int k = 0; k < shippingList.size(); k++) {
+			    	for(int k = 0; k < shippingList.size(); k++) {
 					PriceInfo priceBean = new PriceInfo();
 					priceBean.setProduct(prod);
 					priceBean.setSiteName(siteNameList.get(k));
@@ -351,7 +351,7 @@ public class ProductService {
 					priceBean.setPrice(priceList.get(k));
 					priceBean.setShipping(shippingList.get(k));
 					priceRepository.save(priceBean);
-			    }
+			    	}
 			
 				productRepository.findByName(name).get().setPrice(Collections.min(priceList));
 			}
