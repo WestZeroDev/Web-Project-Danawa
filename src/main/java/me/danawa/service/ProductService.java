@@ -91,7 +91,7 @@ public class ProductService {
 		List<Product> prodList = productRepository.findAll();
 		
 		if(form.getBrand() != null) resultList.add(productRepository.brandOption(form.getBrand()));
-		 
+		
 		if(form.getCpu() != null) resultList.add(productRepository.cpuOption(form.getCpu()));
 		
 		if(form.getSize() != null) resultList.add(productRepository.sizeOption(form.getSize()));
@@ -188,12 +188,12 @@ public class ProductService {
 		ChromeOptions options = new ChromeOptions();
 		WebDriver driver = new ChromeDriver(options);
 		
-		String url = "http://prod.danawa.com/list/?cate=11236463";
+		String url = "http://prod.danawa.com/list/?cate=112758&15main_11_02";
 		driver.get(url);
 		
 		//90개 보기
-//		driver.findElement(By.className("qnt_selector")).click();
-//		driver.findElement(By.xpath("//*[@id=\"productListArea\"]/div[2]/div[2]/div[2]/select/option[3]")).click();
+		driver.findElement(By.className("qnt_selector")).click();
+		driver.findElement(By.xpath("//*[@id=\"productListArea\"]/div[2]/div[2]/div[2]/select/option[3]")).click();
 	
 		//품절 상품 제외
 		driver.findElement(By.xpath("//*[@id=\"danawa_content\"]/div[6]/div/div[1]/div/a")).click();
@@ -203,6 +203,8 @@ public class ProductService {
 		try {Thread.sleep(3000);} catch(InterruptedException e) {}
 		
 		List<WebElement> ahref =  driver.findElements(By.cssSelector(".prod_name a"));
+		
+		//크롤링 할 제품 목록
 		List<String> prodList = new ArrayList<>();
 		for(WebElement e : ahref) {
 			prodList.add(e.getAttribute("href"));
@@ -218,20 +220,17 @@ public class ProductService {
 				String name = nameEle.getText(); //제품명
 				
 				if(productRepository.findByName(name).isPresent()) continue;
-				if(name.contains("FX516PR-HN002")) continue;
-				
 				System.out.println(name);
 				
-				/* 노트북 정보 */
-	    			WebElement imageEle = driver.findElement(By.cssSelector("#baseImage"));
-	            		String image = imageEle.getAttribute("src"); //이미지
+				/* 제품정보 */
+	    		WebElement imageEle = driver.findElement(By.cssSelector("#baseImage"));
+	            String image = imageEle.getAttribute("src"); //이미지
 	            
 				List<WebElement> specEle = driver.findElements(By.className("items"));
 				String spec = "";
 				for(WebElement e : specEle) {
-					spec += e.getText();
+					spec += e.getText(); //상세스펙
 				}
-				System.out.println(spec); //상세정보
 
 				List<WebElement> field = driver.findElements(By.cssSelector("th.tit"));
 				List<WebElement> value = driver.findElements(By.cssSelector("td.dsc"));
@@ -317,11 +316,12 @@ public class ProductService {
 				List<WebElement> imgEle = driver.findElements(By.cssSelector(".high_list .logo_over img"));
 				for(WebElement e : imgEle) {
 					if(!e.getAttribute("src").contains("noImg")) {
-						logoList.add(e.getAttribute("src"));
-						siteNameList.add(e.getAttribute("alt"));
+						logoList.add(e.getAttribute("src")); //쇼핑몰 로고 이미지
+						siteNameList.add(e.getAttribute("alt")); //쇼핑몰 이름
 					}
 				}
 				
+				//쇼핑몰 로고 이미지가 없는 경우
 				for(int j = 0; j < linkEle.size(); j++) {
 					if(linkEle.get(j).getText().length() > 1) {
 						String siteName = linkEle.get(j).getText();
@@ -336,13 +336,13 @@ public class ProductService {
 					}
 				}
 				
-			    	List<WebElement> shippingEle = driver.findElements(By.cssSelector("#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.lowest_area > div.lowest_list > table > tbody.high_list span.stxt.deleveryBaseSection"));
-			    	List<String> shippingList = new ArrayList<>();
-			    	for (WebElement e : shippingEle) {
-					shippingList.add(e.getText()); //배송비
-			    	}
+			    List<WebElement> shippingEle = driver.findElements(By.cssSelector("#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.lowest_area > div.lowest_list > table > tbody.high_list span.stxt.deleveryBaseSection"));
+			    List<String> shippingList = new ArrayList<>();
+			    for (WebElement e : shippingEle) {
+			    	shippingList.add(e.getText()); //배송비
+			    }
 
-			    	for(int k = 0; k < shippingList.size(); k++) {
+			    for(int k = 0; k < shippingList.size(); k++) {
 					PriceInfo priceBean = new PriceInfo();
 					priceBean.setProduct(prod);
 					priceBean.setSiteName(siteNameList.get(k));
@@ -351,8 +351,8 @@ public class ProductService {
 					priceBean.setPrice(priceList.get(k));
 					priceBean.setShipping(shippingList.get(k));
 					priceRepository.save(priceBean);
-			    	}
-				
+			    }
+			
 				productRepository.findByName(name).get().setPrice(Collections.min(priceList));
 			}
 		}
@@ -368,7 +368,7 @@ public class ProductService {
 		
 	}
 	
-	//제품 가격정보 업데이트
+	//가격정보 업데이트
 	public void updatePriceInfo() {
 		try {
 			System.setProperty(WEB_DRIVER_ID, WEB_DRIVER_PATH);
@@ -421,21 +421,22 @@ public class ProductService {
 					List<WebElement> imgEle = driver.findElements(By.cssSelector(".high_list .logo_over img"));
 					for(WebElement e : imgEle) {
 						if(!e.getAttribute("src").contains("noImg")) {
-							logoList.add(e.getAttribute("src")); //로고 이미지 
-							siteNameList.add(e.getAttribute("alt")); //사이트 이름
+							logoList.add(e.getAttribute("src")); //쇼핑몰 로고 이미지
+							siteNameList.add(e.getAttribute("alt")); //쇼핑몰 이름
 						}
 					}
-
+					
+					//쇼핑몰 로고 이미지가 없는 경우
 					for(int k = 0; k < linkEle.size(); k++) {
 						if(linkEle.get(k).getText().length() > 1) {
 							String siteName = linkEle.get(k).getText();
 							if(k > siteNameList.size()) {
-								siteNameList.add(siteName); //사이트 이름
-								logoList.add("X"); //로고 이미지 없는 경우
+								siteNameList.add(siteName);
+								logoList.add("X");
 							}
 							else {
-								siteNameList.add(k, siteName); //사이트 이름
-								logoList.add(k, "X"); //로고 이미지 없는 경우
+								siteNameList.add(k, siteName);
+								logoList.add(k, "X");
 							}
 						}
 					}
@@ -475,7 +476,7 @@ public class ProductService {
 		
 	}
 	
-	//제품 최저가 업데이트
+	//최저가 업데이트
 	public void updateMinPrice() {
 		List<Product> prodList = productRepository.findAll();
 		for(Product prod : prodList) {
