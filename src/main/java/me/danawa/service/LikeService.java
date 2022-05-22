@@ -1,7 +1,5 @@
 package me.danawa.service;
 
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -9,7 +7,6 @@ import me.danawa.domain.Like;
 import me.danawa.repository.LikeRepository;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class LikeService {
 	private final LikeRepository likeRepository;
