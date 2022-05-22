@@ -1,12 +1,10 @@
-package me.danawa.service;
+﻿package me.danawa.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-
-import javax.transaction.Transactional;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -29,107 +27,106 @@ import me.danawa.repository.PriceRepository;
 import me.danawa.repository.ProductRepository;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ProductService {
 	private final ProductRepository productRepository;
 	private final PriceRepository priceRepository;
-	
+
 	public final String WEB_DRIVER_ID = "webdriver.chrome.driver"; //드라이버 ID
 	public final String WEB_DRIVER_PATH = "E:\\crawling\\chromedriver.exe"; //드라이버 경로
-	
+
 	public Product save(Product prod) {
 		return productRepository.save(prod);
 	}
-	
+
 	public Optional<Product> findById(Long prodId) {
 		return productRepository.findById(prodId);
 	}
-	
+
 	//노트북 전체
 	public Page<Product> getProdList(Pageable pageable, String sort) {
 		pageable = sort(pageable, sort);
 		return productRepository.findAll(pageable);
 	}
-	
+
 	//관심상품 목록
 	public Page<Product> getWishProdList(List<Wish> wishList, Pageable pageable, String sort) {
 		List<Product> prodList = new ArrayList<>();
 		for(Wish wish : wishList) {
 			prodList.add(wish.getProduct());
 		}
-		
+
 		if(sort.equals("none")) {
 			Collections.reverse(prodList);
 		}
 		else {
 			sort(prodList, sort);
 		}
-		
+
 		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        	pageable = PageRequest.of(page, 10);
+		pageable = PageRequest.of(page, 10);
 		int start = (int)pageable.getOffset();
 		int end = Math.min((start + pageable.getPageSize()), prodList.size());
 		return new PageImpl<>(prodList.subList(start, end), pageable, prodList.size());
-    	}
-	
+	}
+
 	//메인 검색창
 	public Page<Product> mainSearch(Pageable pageable, String keyword) {
 		List<Product> resultList = productRepository.findBySpecContainsIgnoreCase(keyword);
 		resultList.addAll(productRepository.findByNameContainsIgnoreCase(keyword));
-		
+
 		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        	pageable = PageRequest.of(page, 5);
+		pageable = PageRequest.of(page, 5);
 		int start = (int)pageable.getOffset();
 		int end = Math.min((start + pageable.getPageSize()), resultList.size());
 		return new PageImpl<>(resultList.subList(start, end), pageable, resultList.size());
 	}
-	
+
 	//노트북 상세검색
 	public Page<Product> search(SearchForm form, String sort, Pageable pageable) {
 		List<List<Product>> resultList = new ArrayList<>();
 		List<Product> prodList = productRepository.findAll();
-		
+
 		if(form.getBrand() != null) resultList.add(productRepository.brandOption(form.getBrand()));
-		
+
 		if(form.getCpu() != null) resultList.add(productRepository.cpuOption(form.getCpu()));
-		
+
 		if(form.getSize() != null) resultList.add(productRepository.sizeOption(form.getSize()));
-		
+
 		if(form.getMemory() != null) resultList.add(productRepository.memoryOption(form.getMemory()));
-		
+
 		if(form.getStorage() != null) resultList.add(productRepository.storageOption(form.getStorage()));
-		
+
 		if(form.getOs() != null) resultList.add(productRepository.osOption(form.getOs()));
-		
+
 		if(form.getWeight() != null) resultList.add(productRepository.weightOption(form.getWeight()));
-		
+
 		if(form.getMinPrice() != "" && form.getMaxPrice() != "") {
 			int min = Integer.parseInt(form.getMinPrice());
 			int max = Integer.parseInt(form.getMaxPrice());
 			resultList.add(productRepository.priceOption(min, max));
 		}
-		
+
 		if(form.getKeyword() != "") {
 			List<Product> tmp = productRepository.findBySpecContainsIgnoreCase(form.getKeyword());
 			tmp.addAll(productRepository.findByNameContainsIgnoreCase(form.getKeyword()));
 			resultList.add(tmp);
 		}
-		
+
 		for(List<Product> res : resultList) {
 			prodList.retainAll(res);
 			if(prodList.isEmpty()) break;
 		}
 
 		sort(prodList, sort);
-		
+
 		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, 10);
+		pageable = PageRequest.of(page, 10);
 		int start = (int)pageable.getOffset();
 		int end = Math.min((start + pageable.getPageSize()), prodList.size());
 		return new PageImpl<>(prodList.subList(start, end), pageable, prodList.size());
 	}
-	
+
 	//정렬
 	public void sort(List<Product> prodList, String sort) {
 		if(sort.equals("minPrice")) {
@@ -161,7 +158,7 @@ public class ProductService {
 			});
 		}
 	}
-	
+
 	//정렬
 	public Pageable sort(Pageable pageable, String sort) {
 		int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
@@ -176,7 +173,7 @@ public class ProductService {
 		}
 		return pageable;
 	}
-	
+
 	//제품정보, 가격정보 크롤링
 	public void crawling() {
 		try {
@@ -184,32 +181,32 @@ public class ProductService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		ChromeOptions options = new ChromeOptions();
 		WebDriver driver = new ChromeDriver(options);
-		
+
 		String url = "http://prod.danawa.com/list/?cate=112758&15main_11_02";
 		driver.get(url);
-		
+
 		//90개 보기
 		driver.findElement(By.className("qnt_selector")).click();
 		driver.findElement(By.xpath("//*[@id=\"productListArea\"]/div[2]/div[2]/div[2]/select/option[3]")).click();
-	
+
 		//품절 상품 제외
 		driver.findElement(By.xpath("//*[@id=\"danawa_content\"]/div[6]/div/div[1]/div/a")).click();
 		driver.findElement(By.xpath("//*[@id=\"defaultExptFilterArea\"]/div[3]/label/span")).click();
 		driver.findElement(By.xpath("//*[@id=\"detailSearchSubmitBtn\"]")).click();
 
 		try {Thread.sleep(3000);} catch(InterruptedException e) {}
-		
+
 		List<WebElement> ahref =  driver.findElements(By.cssSelector(".prod_name a"));
-		
+
 		//크롤링 할 제품 목록
 		List<String> prodList = new ArrayList<>();
 		for(WebElement e : ahref) {
 			prodList.add(e.getAttribute("href"));
 		}
-		
+
 		for(int i = 0; i < prodList.size(); i++) {
 			if(prodList.get(i).contains("pcode")) {
 				String prodUrl = prodList.get(i);
@@ -218,14 +215,14 @@ public class ProductService {
 
 				WebElement nameEle = driver.findElement(By.className("prod_tit"));
 				String name = nameEle.getText(); //제품명
-				
+
 				if(productRepository.findByName(name).isPresent()) continue;
 				System.out.println(name);
-				
+
 				/* 제품정보 */
-	    		WebElement imageEle = driver.findElement(By.cssSelector("#baseImage"));
-	            String image = imageEle.getAttribute("src"); //이미지
-	            
+				WebElement imageEle = driver.findElement(By.cssSelector("#baseImage"));
+				String image = imageEle.getAttribute("src"); //이미지
+
 				List<WebElement> specEle = driver.findElements(By.className("items"));
 				String spec = "";
 				for(WebElement e : specEle) {
@@ -293,16 +290,16 @@ public class ProductService {
 				prod.setRegDate(regdate);
 				prod.setSpec(spec);
 				productRepository.save(prod);
-				
+
 				/* 가격정보 */
 				List<WebElement> priceEle = driver.findElements(By.cssSelector(".high_list .price .prc_t"));
 				List<Integer> priceList = new ArrayList<>();
 				for(WebElement e : priceEle) {
-					if (e.getText().contains(",")) {
+					if(e.getText().contains(",")) {
 						priceList.add(Integer.parseInt(e.getText().replace(",", ""))); //가격
 					}
 				}
-				
+
 				List<WebElement> linkEle = driver.findElements(By.cssSelector(".high_list .logo_over a"));
 				List<String> linkList = new ArrayList<>();
 				for(WebElement e : linkEle) {
@@ -320,7 +317,7 @@ public class ProductService {
 						siteNameList.add(e.getAttribute("alt")); //쇼핑몰 이름
 					}
 				}
-				
+
 				//쇼핑몰 로고 이미지가 없는 경우
 				for(int j = 0; j < linkEle.size(); j++) {
 					if(linkEle.get(j).getText().length() > 1) {
@@ -335,14 +332,14 @@ public class ProductService {
 						}
 					}
 				}
-				
-			    List<WebElement> shippingEle = driver.findElements(By.cssSelector("#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.lowest_area > div.lowest_list > table > tbody.high_list span.stxt.deleveryBaseSection"));
-			    List<String> shippingList = new ArrayList<>();
-			    for (WebElement e : shippingEle) {
-			    	shippingList.add(e.getText()); //배송비
-			    }
 
-			    for(int k = 0; k < shippingList.size(); k++) {
+				List<WebElement> shippingEle = driver.findElements(By.cssSelector("#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.lowest_area > div.lowest_list > table > tbody.high_list span.stxt.deleveryBaseSection"));
+				List<String> shippingList = new ArrayList<>();
+				for (WebElement e : shippingEle) {
+					shippingList.add(e.getText()); //배송비
+				}
+
+				for(int k = 0; k < shippingList.size(); k++) {
 					PriceInfo priceBean = new PriceInfo();
 					priceBean.setProduct(prod);
 					priceBean.setSiteName(siteNameList.get(k));
@@ -351,8 +348,8 @@ public class ProductService {
 					priceBean.setPrice(priceList.get(k));
 					priceBean.setShipping(shippingList.get(k));
 					priceRepository.save(priceBean);
-			    }
-			
+				}
+
 				productRepository.findByName(name).get().setPrice(Collections.min(priceList));
 			}
 		}
@@ -365,9 +362,9 @@ public class ProductService {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		}
-		
+
 	}
-	
+
 	//가격정보 업데이트
 	public void updatePriceInfo() {
 		try {
@@ -378,9 +375,9 @@ public class ProductService {
 
 		ChromeOptions options = new ChromeOptions();
 		WebDriver driver = new ChromeDriver(options);
-		
+
 		List<Product> prodList = productRepository.findAll();
-		
+
 		for(int i = 0; i < prodList.size(); i++) {
 			String url = "http://search.danawa.com/dsearch.php?k1=" + prodList.get(i).getName() + "&module=goods&act=dispMain";
 			driver.get(url);
@@ -425,7 +422,7 @@ public class ProductService {
 							siteNameList.add(e.getAttribute("alt")); //쇼핑몰 이름
 						}
 					}
-					
+
 					//쇼핑몰 로고 이미지가 없는 경우
 					for(int k = 0; k < linkEle.size(); k++) {
 						if(linkEle.get(k).getText().length() > 1) {
@@ -443,12 +440,12 @@ public class ProductService {
 
 					List<WebElement> shippingEle = driver.findElements(By.cssSelector("#blog_content > div.summary_info > div.detail_summary > div.summary_left > div.lowest_area > div.lowest_list > table > tbody.high_list span.stxt.deleveryBaseSection"));
 					List<String> shippingList = new ArrayList<>();
-					for (WebElement e : shippingEle) {
+					for(WebElement e : shippingEle) {
 						shippingList.add(e.getText()); //배송비
 					}
 
 					priceRepository.deleteAllByProduct(prodList.get(i));
-					
+
 					for(int k = 0; k < shippingList.size(); k++) {
 						PriceInfo priceBean = new PriceInfo();
 						priceBean.setProduct(prodList.get(i));
@@ -459,12 +456,12 @@ public class ProductService {
 						priceBean.setShipping(shippingList.get(k));
 						priceRepository.save(priceBean);
 					}
-					
+
 					break;
 				}
 			}
 		}
-		
+
 		try {
 			if(driver != null) {
 				driver.close();
@@ -473,9 +470,9 @@ public class ProductService {
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		}
-		
+
 	}
-	
+
 	//최저가 업데이트
 	public void updateMinPrice() {
 		List<Product> prodList = productRepository.findAll();

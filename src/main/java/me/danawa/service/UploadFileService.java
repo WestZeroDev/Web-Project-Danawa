@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,7 +18,6 @@ import me.danawa.domain.UploadFile;
 import me.danawa.repository.UploadFileRepository;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class UploadFileService {
 	private final UploadFileRepository uploadFileRepository;

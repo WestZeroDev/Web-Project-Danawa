@@ -1,7 +1,5 @@
 package me.danawa.service;
 
-import javax.transaction.Transactional;
-
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -11,7 +9,6 @@ import me.danawa.domain.Wish;
 import me.danawa.repository.WishRepository;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class WishService {
 	private final WishRepository wishRepository;
